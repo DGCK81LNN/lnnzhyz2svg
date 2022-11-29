@@ -25,23 +25,25 @@ function drawAffix(
       )
     )
 
-  let d = `M${x},${flipY ? 12 : 0}`
+  let d = ""
   if ("glide" in element)
     d +=
-      flipPath(glides[element.glide], flipX, flipY) + `M${x},${flipY ? 12 : 0}`
+      `M${flipX ? x + 2 : x - 2},${flipY ? 12 : 0}` +
+      flipPath(glides[element.glide], flipX, flipY)
+
+  d += `M${x},${flipY ? 12 : 0}`
   if ("vowel" in element) {
     d += flipPath(vowels[element.vowel], flipX, flipY)
     if ("coda" in element)
       d +=
         `M${flipX ? x + 2 : x - 2},${flipY ? 2 : 10}` +
         flipPath(codas[element.coda], flipX, flipY)
-    else if (element.vowel === "e" || element.vowel === "a")
+    else if (["e", "a", "o", "eh"].includes(element.vowel))
       d += `v${flipY ? -6 : shrink ? 4 : 6}`
   } else {
     d += `v${flipY ? -12 : shrink ? 10 : 12}`
   }
 
-  console.dir({ element, x, flipX, flipY, shrink, d })
   return d
 }
 
@@ -52,8 +54,11 @@ export function draw(text: CompiledText): string {
     const bottomLineStartX = word[0].reverseAffixes
       ? x
       : x + word[0].pre.length * 4
+    const hyphens: number[] = []
+
     word.forEach((char, charIndex) => {
       if (char.proper) d += `M${x},-2v2`
+      if (char.hyphen) hyphens.push(x - 2)
 
       if (char.pre.length) {
         if (char.reverseAffixes) {
@@ -80,7 +85,7 @@ export function draw(text: CompiledText): string {
         d += `M${x},0` + consonants[char.main.consonant]
         x += 6
       } else {
-        d += drawAffix(char.main, x + 2, false, false)
+        d += `M${x},0h2` + drawAffix(char.main, x + 2, false, false)
         x += 2
       }
 
@@ -94,12 +99,16 @@ export function draw(text: CompiledText): string {
       }
       x += 2
     })
-    x -= 2
-    const bottomLineEndX = word.at(-1).reverseAffixes
-      ? x
-      : x - word.at(-1).post.length * 4
 
-    d += `M${bottomLineStartX},12H${bottomLineEndX}`
+    const bottomLineEndX = word.at(-1).reverseAffixes
+      ? x - 2
+      : x - 2 - word.at(-1).post.length * 4
+
+    d += `M${bottomLineStartX},12`
+    hyphens.forEach(x => {
+      d += `H${x}v2h2v-2`
+    })
+    d += `H${bottomLineEndX}`
   })
-  return makeSvg(x, d)
+  return makeSvg(x - 2, d)
 }

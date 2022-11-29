@@ -10,6 +10,7 @@ const consonantMapping: Record<string, string> = {
   "n": "nj",
   "D": "c",
   "H": "nz",
+  "N": "ng",
   "4": "",
   "5": "ngw",
   "v": "lw",
@@ -59,6 +60,16 @@ function compileRadicalLetters(elements: string): Element[] {
   return [...elements].map(add => getOwnProp(mapping, add))
 }
 
+/**
+ * Compile Shidinn text into {@link CompiledText}.
+ *
+ * `input` should be in Shidinn Chat Alphabet, following these additional rules:
+ *
+ *   * Separate characters in a word with underscores (`_`).
+ *   * Separate words with spaces.
+ *   * Hyphens can be used but punctuation is not allowed.
+ *   * Prefix proper nouns with a caret (`^`).
+ */
 export function compileShidinn(input: string): CompiledText {
   const words = input.trim().split(/\s+/g)
   return words.map(word => {

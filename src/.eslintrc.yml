@@ -13,6 +13,3 @@ plugins:
 rules:
   '@typescript-eslint/no-extra-semi': 'off'
   'prefer-const': 'warn'
-ignorePatterns:
-- 'test/**/*'
-- 'lib/**/*'

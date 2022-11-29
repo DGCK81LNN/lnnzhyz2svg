@@ -1,16 +1,20 @@
 {
   "name": "@dgck81lnn/lnnzhyz2svg",
   "version": "0.1.0",
-  "scripts": {
-    "test": "mocha"
-  },
   "author": "DGCK81LNN <triluolnn@163.com>",
   "license": "MIT",
+  "files": ["lib/**/*"],
+  "main": "lib/index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DGCK81LNN/lnnzhyz2svg.git"
+  },
   "devDependencies": {
     "@types/chai": "^4.3.4",
     "@types/mocha": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^5.44.0",
     "chai": "^4.3.7",
+    "esbuild": "^0.15.16",
     "eslint": "^8.28.0",
     "mocha": "^10.1.0",
     "ts-node": "^10.9.1",
@@ -19,8 +23,10 @@
   "directories": {
     "test": "test"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/DGCK81LNN/lnnzhyz2svg.git"
+  "scripts": {
+    "test": "mocha",
+    "build": "npm run build:lib & npm run build:libdts",
+    "build:lib": "esbuild src/index.ts --bundle --outdir=lib --format=cjs",
+    "build:libdts": "tsc"
   }
 }
