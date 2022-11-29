@@ -5,32 +5,53 @@ describe("compile", function () {
   describe("mandarin", function () {
     describe("compileMandarin()", function () {
       it("compiles a piece of mandarin text", function () {
-        const source = "ni3_hau3 sh4_jie4"
+        const source = "^zhung1_hua2_y3_z4"
         const result = compileMandarin(source)
 
         /** @type {import("../src/types").CompiledText} */
         const expected =
-          /* prettier-ignore */ [[{main:{consonant:"n"},pre:[{glide:"i"}],post:[],reverseAffixes:true},{main:{consonant:"h"},pre:[{vowel:"a",coda:"u"}],post:[],reverseAffixes:true}],[{main:{consonant:"sh"},pre:[],post:[{}],reverseAffixes:true},{main:{consonant:"j"},pre:[],post:[{glide:"i",vowel:"e"}],reverseAffixes:true}]]
+          /* prettier-ignore */ [[{proper:true,main:{consonant:"zh"},pre:[],post:[{glide:"u",vowel:"e",coda:"ng"}],reverseAffixes:false},{main:{consonant:"h"},pre:[{glide:"u",vowel:"a"}],post:[],reverseAffixes:false},{main:{consonant:""},pre:[{glide:"y"}],post:[],reverseAffixes:true},{main:{consonant:"z"},pre:[],post:[{}],reverseAffixes:true}]]
         expect(result).to.deep.equal(expected)
       })
 
-      it("compiles another piece of mandarin text", function () {
-        const source = "^L_^N_^N ^zhung1_hua2_y3_z4"
+      it("handles special spellings and special syllables", function () {
+        const source = "hm hng   ng1   iung1   eh1   o1 ong1 uo1 bo1 hong1"
         const result = compileMandarin(source)
 
         /** @type {import("../src/types").CompiledText} */
         const expected =
-          /* prettier-ignore */ [[{proper:true,main:{consonant:"l"},pre:[],post:[]},{proper:true,main:{consonant:"n"},pre:[],post:[]},{proper:true,main:{consonant:"n"},pre:[],post:[]}],[{proper:true,main:{consonant:"zh"},pre:[],post:[{glide:"u",vowel:"e",coda:"ng"}],reverseAffixes:false},{main:{consonant:"h"},pre:[{glide:"u",vowel:"a"}],post:[],reverseAffixes:false},{main:{consonant:""},pre:[{glide:"y"}],post:[],reverseAffixes:true},{main:{consonant:"z"},pre:[],post:[{}],reverseAffixes:true}]]
+          /* prettier-ignore */
+          [
+            [{main:{consonant:"h"},pre:[],post:[{consonant:"m"}]}],
+            [{main:{consonant:"h"},pre:[],post:[{consonant:""}]}],
+
+            [{main:{consonant:""},pre:[],post:[{}],reverseAffixes:false}],
+
+            [{main:{consonant:""},pre:[],post:[{glide:"y",vowel:"e",coda:"ng"}],reverseAffixes:false}],
+
+            [{main:{consonant:""},pre:[],post:[{vowel:"eh"}],reverseAffixes:false}],
+
+            [{main:{consonant:""},pre:[],post:[{vowel:"o"}],reverseAffixes:false}],
+            [{main:{consonant:""},pre:[],post:[{vowel:"o",coda:"ng"}],reverseAffixes:false}],
+            [{main:{consonant:""},pre:[],post:[{glide:"u",vowel:"e"}],reverseAffixes:false}],
+            [{main:{consonant:"b"},pre:[],post:[{glide:"u",vowel:"e"}],reverseAffixes:false}],
+            [{main:{consonant:"h"},pre:[],post:[{glide:"u",vowel:"e",coda:"ng"}],reverseAffixes:false}],
+          ]
         expect(result).to.deep.equal(expected)
       })
 
-      it("recognises numbers", function () {
-        const source = "1_1_4_5"
+      it("recognises letterals", function () {
+        const source = "8_1 ^L_^N_^N Xa"
         const result = compileMandarin(source)
 
         /** @type {import("../src/types").CompiledText} */
         const expected =
-          /* prettier-ignore */ [[{main:{consonant:"1"},pre:[],post:[]},{main:{consonant:"1"},pre:[],post:[]},{main:{consonant:"4"},pre:[],post:[]},{main:{consonant:"5"},pre:[],post:[]}]]
+          /* prettier-ignore */
+          [
+            [{main:{consonant:"8"},pre:[],post:[]},{main:{consonant:"1"},pre:[],post:[]}],
+            [{proper:true,main:{consonant:"l"},pre:[],post:[]},{proper:true,main:{consonant:"n"},pre:[],post:[]},{proper:true,main:{consonant:"n"},pre:[],post:[]}],
+            [{main:{consonant:"xa"},pre:[],post:[]}],
+          ]
         expect(result).to.deep.equal(expected)
       })
 

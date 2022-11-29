@@ -2,7 +2,9 @@ import { Character, Element } from "../types"
 import { compileGeneral } from "./general"
 
 const syllableRegex =
-  /^(zh|ch|sh|[bpmfdtnlgkhjqxrzcs])?([iuy])?([ae])?([iunr]|ng)?([1-4])$/
+  /^(zh|ch|sh|[bpmfdtnlgkhjqxrzcs])?([iuy]|iu)?([aeo])?([iunr]|ng)?([1-4])$/
+const ngRegex = /^(ng)()()()([1-4])$/
+const ehRegex = /^()()(eh)()([1-4])$/
 const letteralRegex = /^([A-Z]|Zh|Ch|Sh|Er|[0-9]|X[a-f])$/
 
 function getLetteral(lett: string): Element {
@@ -12,19 +14,33 @@ function getLetteral(lett: string): Element {
   return { consonant: lett.toLowerCase() }
 }
 
-function compileSyllable(char: string) {
-  const match = char.match(syllableRegex)
+function compileSyllable(char: string): Character {
+  if (char === "hm" || char === "hng")
+    return {
+      main: { consonant: "h" },
+      pre: [],
+      post: [{ consonant: char === "hm" ? "m" : "" }],
+    }
+
+  const match =
+    char.match(ngRegex) || char.match(syllableRegex) || char.match(ehRegex)
   if (!match) return
 
-  const [, init, glide, vowl, coda, tone] = match
-  if (!init && !glide && !vowl && !coda) return
+  let [, init, glide, vowel, coda, tone] = match
+  if (!init && !glide && !vowel && !coda) return
 
-  const vowel = vowl || (coda && "e")
+  if (init === "ng") init = ""
+  if (coda && !vowel) vowel = "e"
+  if (glide === "iu") glide = "y"
+  if ((init || glide) && vowel === "o") {
+    glide = glide === "i" ? "y" : "u"
+    vowel = "e"
+  }
 
   const character: Character = {
     main: { consonant: init || "" },
-    pre: [] as Element[],
-    post: [] as Element[],
+    pre: [],
+    post: [],
     reverseAffixes: tone === "3" || tone === "4",
   }
   const affix = {
