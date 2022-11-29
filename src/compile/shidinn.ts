@@ -1,9 +1,10 @@
-import { Element, Character, CompiledText } from "../types"
+import { Element } from "../types"
 import { getOwnProp } from "../utils"
+import { compileGeneral } from "./general"
 
 const charcterRegex =
-  /^(-)?(\^)?([1-8ABDEFHLNTVYa-z]*?)([457BDFHNbcdfghj-np-tv-z])([iu]?)([12368AELTVYaeo])([1-8ABD-FHLNTVYa-z]*)$/
-const letterRegex = /^(-)?(\^)?()([1-8ABDEFHLNTVYa-z])()()()$/
+  /^([1-8ABDEFHLNTVYa-z]*?)([457BDFHNbcdfghj-np-tv-z])([iu]?)([12368AELTVYaeo])([1-8ABD-FHLNTVYa-z]*)$/
+const letterRegex = /^()([1-8ABDEFHLNTVYa-z])()()()$/
 
 const consonantMapping: Record<string, string> = {
   "w": "f",
@@ -56,6 +57,7 @@ function compileFinal(glid: string, vowl: string): Element[] {
     },
   ]
 }
+
 function compileRadicalLetters(elements: string): Element[] {
   return [...elements].map(add => getOwnProp(mapping, add))
 }
@@ -70,23 +72,17 @@ function compileRadicalLetters(elements: string): Element[] {
  *   * Hyphens can be used but punctuation is not allowed.
  *   * Prefix proper nouns with a caret (`^`).
  */
-export function compileShidinn(input: string): CompiledText {
-  const words = input.trim().split(/\s+/g)
-  return words.map(word => {
-    const characters = word.split(/_|(?=-)/g)
-    return characters.map(char => {
-      const match = char.match(charcterRegex) || char.match(letterRegex)
-      if (!match) throw new SyntaxError(`Invalid Shidinn character ${char}`)
+export function compileShidinn(input: string) {
+  return compileGeneral(input, char => {
+    const match = char.match(charcterRegex) || char.match(letterRegex)
+    if (!match) throw new SyntaxError(`Invalid Shidinn character ${char}`)
 
-      const [, hyph, prop, pre, init, glid, vowl, post] = match
+    const [, pre, init, glid, vowl, post] = match
 
-      return {
-        ...(hyph ? { hyphen: true } : null),
-        ...(prop ? { proper: true } : null),
-        pre: compileRadicalLetters(pre),
-        main: getOwnProp(mapping, init),
-        post: compileFinal(glid, vowl).concat(compileRadicalLetters(post)),
-      } as Character
-    })
+    return {
+      pre: compileRadicalLetters(pre),
+      main: getOwnProp(mapping, init),
+      post: compileFinal(glid, vowl).concat(compileRadicalLetters(post)),
+    }
   })
 }

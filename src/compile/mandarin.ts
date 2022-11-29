@@ -1,8 +1,9 @@
-import { Character, CompiledText, Element } from "../types"
+import { Character, Element } from "../types"
+import { compileGeneral } from "./general"
 
 const syllableRegex =
-  /^(-)?(\^)?(zh|ch|sh|[bpmfdtnlgkhjqxrzcs])?([iuy])?([ae])?([iunr]|ng)?([1-4])$/
-const letteralRegex = /^(-)?(\^?)?([A-Z]|Zh|Ch|Sh|Er|[0-9]|X[a-f])$/
+  /^(zh|ch|sh|[bpmfdtnlgkhjqxrzcs])?([iuy])?([ae])?([iunr]|ng)?([1-4])$/
+const letteralRegex = /^([A-Z]|Zh|Ch|Sh|Er|[0-9]|X[a-f])$/
 
 function getLetteral(lett: string): Element {
   if (lett === "Er") return { modifier: "er" }
@@ -15,14 +16,12 @@ function compileSyllable(char: string) {
   const match = char.match(syllableRegex)
   if (!match) return
 
-  const [, hyph, prop, init, glide, vowl, coda, tone] = match
+  const [, init, glide, vowl, coda, tone] = match
   if (!init && !glide && !vowl && !coda) return
 
   const vowel = vowl || (coda && "e")
 
   const character: Character = {
-    ...(hyph ? { hyphen: true } : null),
-    ...(prop ? { proper: true } : null),
     main: { consonant: init || "" },
     pre: [] as Element[],
     post: [] as Element[],
@@ -36,14 +35,13 @@ function compileSyllable(char: string) {
   ;(tone === "2" || tone === "3" ? character.pre : character.post).push(affix)
   return character
 }
+
 function compileLetteral(char: string) {
   const match = char.match(letteralRegex)
   if (!match) return
 
-  const [, hyph, prop, lett] = match
+  const [, lett] = match
   return {
-    ...(hyph ? { hyphen: true } : null),
-    ...(prop ? { proper: true } : null),
     main: getLetteral(lett),
     pre: [],
     post: [],
@@ -62,14 +60,6 @@ function compileLetteral(char: string) {
  *   * Prefix proper nouns with a caret (`^`).
  *   * Letterals should be capitalized.
  */
-export function compileMandarin(input: string): CompiledText {
-  const words = input.trim().split(/\s+/g)
-  return words.map(word => {
-    const characters = word.split(/_|(?=-)/g)
-    return characters.map(char => {
-      const character = compileSyllable(char) || compileLetteral(char)
-      if (!character) throw new SyntaxError(`Invalid character ${char}`)
-      return character
-    })
-  })
+export function compileMandarin(input: string) {
+  return compileGeneral(input, compileSyllable, compileLetteral)
 }
