@@ -4,10 +4,12 @@ class Demo {
   constructor(inputbox, out, fn) {
     this.inputbox = inputbox
     this.out = out
+    this.fn = fn
+
     this.inputbox.oninput = () => {
       this.error = null
       try {
-        out.innerHTML = fn(inputbox.value || inputbox.placeholder)
+        this.update()
       } catch (error) {
         this.error = error
       }
@@ -17,20 +19,28 @@ class Demo {
     }
 
     try {
-      out.innerHTML = fn(inputbox.value || inputbox.placeholder)
+      this.update()
     } catch (error) {
       out.innerText = error
     }
+  }
+
+  update() {
+    let text = this.inputbox.value || this.inputbox.placeholder
+    text = text.replace(/[\ufdd0-\ufdef]/, "\ufffd").replace(/</g, "\ufdd0")
+    text = text.replace(/[\^]?\w+(?:[ _\-][\^]?\w+)*/g, this.fn)
+    text = text.replace(/\ufdd0/g, "&lt;").replace(/\n/g, "<br>")
+    this.out.innerHTML = text
   }
 }
 
 new Demo(
   document.getElementById("inputbox-mandarin"),
   document.getElementById("out-mandarin"),
-  text => '<p style="font-size: 2rem">' + drawMandarin(text) + "</p>"
+  text => drawMandarin(text)
 )
 new Demo(
   document.getElementById("inputbox-shidinn"),
   document.getElementById("out-shidinn"),
-  text => '<p style="font-size: 2rem">' + drawShidinn(text) + "</p>"
+  text => drawShidinn(text)
 )
