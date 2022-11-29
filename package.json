@@ -27,6 +27,7 @@
     "test": "mocha",
     "build": "npm run build:lib & npm run build:libdts",
     "build:lib": "esbuild src/index.ts --bundle --outdir=lib --format=cjs",
-    "build:libdts": "tsc"
+    "build:libdts": "tsc",
+    "buildsite": "esbuild site/app.js --bundle --minify --target=es2018 --outfile=site/app.bundle.min.js"
   }
 }
