@@ -7,7 +7,7 @@ const { consonants, glides, vowels, codas, modifiers, narrowConsonants } = data
 
 function makeSvg(x: number, d: string) {
   const width = x + 3
-  return /* xml */ `<svg xmlns="http://www.w3.org/2000/svg" height="1.1875em" viewBox="-1.5,-3.5,${width},19" style="vertical-align:-15%"><path fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="square" d="${d}"/></svg>`
+  return /* xml */ `<svg xmlns="http://www.w3.org/2000/svg" height="1.1875em" viewBox="-1.5,-3.5,${width},19" style="vertical-align:text-bottom"><path fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="square" d="${d}"/></svg>`
 }
 
 function drawAffix(
