@@ -3,7 +3,7 @@ import { getOwnProp } from "../utils"
 import { compileGeneral } from "./general"
 
 const charcterRegex =
-  /^([1-8ABDEFHLNTVYa-z]*?)([457BDFHNbcdfghj-np-tv-z])([iu]?)([12368AELTVYaeo])([1-8ABD-FHLNTVYa-z]*)$/
+  /^([1-8ABDEFHLNTVYa-z]*)([457BDFHNbcdfghj-np-tv-z])([iu]?)([12368AELTVYaeo])([1-8ABD-FHLNTVYa-z]*)$/
 const letterRegex = /^()([1-8ABDEFHLNTVYa-z])()()()$/
 
 const consonantMapping: Record<string, string> = {

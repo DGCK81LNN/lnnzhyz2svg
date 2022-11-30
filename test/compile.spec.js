@@ -98,6 +98,16 @@ describe("compile", function () {
           /* prettier-ignore */ [[{pre:[],main:{vowel:"e",coda:"n"},post:[]},{hyphen:true,pre:[{consonant:"y"}],main:{consonant:"r"},post:[{glide:"u",vowel:"a",coda:"u"}]}]]
         expect(result).to.deep.equal(expected)
       })
+
+      it("handles multiple prefixes correctly", function () {
+        const source = "4oquV"
+        const result = compileShidinn(source)
+
+        /** @type {import("../src/types").CompiledText} */
+        const expected =
+          /* prettier-ignore */ [[{pre:[{consonant:""},{vowel:"oo"}],main:{consonant:"q"},post:[{glide:"u",vowel:"e",coda:"i"}]}]]
+        expect(result).to.deep.equal(expected)
+      })
     })
   })
 })
