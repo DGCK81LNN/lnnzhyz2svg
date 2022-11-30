@@ -15,6 +15,7 @@ jobs:
         cache: npm
     - run: npm install
     - run: npm run buildsite
+    - run: npm run build:dist
     - name: Move files
       run: |
         rm site/app.js
