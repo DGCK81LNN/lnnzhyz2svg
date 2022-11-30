@@ -3,7 +3,10 @@
   "version": "0.1.1",
   "author": "DGCK81LNN <triluolnn@163.com>",
   "license": "MIT",
-  "files": ["lib/**/*"],
+  "files": [
+    "lib/**/*",
+    "dist/**/*"
+  ],
   "main": "lib/index.js",
   "repository": {
     "type": "git",
@@ -25,9 +28,10 @@
   },
   "scripts": {
     "test": "mocha",
-    "build": "npm run build:lib & npm run build:libdts",
-    "build:lib": "esbuild src/index.ts --bundle --outdir=lib --format=cjs",
+    "build": "npm run build:libdts && npm run build:lib && npm run build:dist",
     "build:libdts": "tsc",
+    "build:lib": "esbuild src/index.ts --bundle --outdir=lib --format=cjs",
+    "build:dist": "esbuild src/index.ts --bundle --minify --format=iife --global-name=lnnzhyz2svg --outfile=dist/index.min.js",
     "buildsite": "esbuild site/app.js --bundle --minify --target=es2018 --outfile=site/app.bundle.min.js"
   }
 }
