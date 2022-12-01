@@ -4,6 +4,8 @@ import { compileGeneral } from "./general"
 
 const charcterRegex =
   /^([1-8ABDEFHLNTVYa-z]*)([457BDFHNbcdfghj-np-tv-z])([iu]?)([12368AELTVYaeo])([1-8ABD-FHLNTVYa-z]*)$/
+const vowellessRegex =
+  /^([1-8ABDEFHLNTVYa-z]*)([457BDFHNbcdfghj-np-tv-z])([iu])()([1-8ABD-FHLNTVYa-z]*)$/
 const letterRegex = /^()([1-8ABDEFHLNTVYa-z])()()()$/
 
 const consonantMapping: Record<string, string> = {
@@ -44,12 +46,12 @@ const mapping: Record<string, Element> = {
   "8": { vowel: "e", coda: "ng" },
   "3": { vowel: "e", coda: "n" },
   "V": { vowel: "e", coda: "i" },
-  "1": {},
+  "1": { vowel: "ih" },
   "i": { glide: "i" },
 }
 
 function compileFinal(glid: string, vowl: string): Element[] {
-  if (!vowl) return []
+  if (!glid && !vowl) return []
   return [
     {
       ...getOwnProp(mapping, vowl),
@@ -74,7 +76,7 @@ function compileRadicalLetters(elements: string): Element[] {
  */
 export function compileShidinn(input: string) {
   return compileGeneral(input, char => {
-    const match = char.match(charcterRegex) || char.match(letterRegex)
+    const match = char.match(charcterRegex) || char.match(vowellessRegex) || char.match(letterRegex)
     if (!match) throw new SyntaxError(`Invalid Shidinn character ${char}`)
 
     const [, pre, init, glid, vowl, post] = match

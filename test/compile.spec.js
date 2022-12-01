@@ -108,6 +108,16 @@ describe("compile", function () {
           /* prettier-ignore */ [[{pre:[{consonant:""},{vowel:"oo"}],main:{consonant:"q"},post:[{glide:"u",vowel:"e",coda:"i"}]}]]
         expect(result).to.deep.equal(expected)
       })
+
+      it("handles vowelless characters correctly", function () {
+        const source = "wup"
+        const result = compileShidinn(source)
+
+        /** @type {import("../src/types").CompiledText} */
+        const expected =
+          /* prettier-ignore */ [[{pre:[],main:{consonant:"f"},post:[{glide:"u"},{consonant:"p"}]}]]
+        expect(result).to.deep.equal(expected)
+      })
     })
   })
 })
