@@ -32,9 +32,13 @@ function compileSyllable(char: string): Character {
   if (init === "ng") init = ""
   if (coda && !vowel) vowel = "e"
   if (glide === "iu") glide = "y"
-  if ((init || glide) && vowel === "o") {
-    glide = glide === "i" ? "y" : "u"
-    vowel = "e"
+  if (vowel === "o") {
+    if (coda === "u") {
+      vowel = "e"
+    } else if (init || glide) {
+      glide = glide === "i" ? "y" : "u"
+      vowel = "e"
+    }
   }
 
   const character: Character = {

@@ -15,7 +15,7 @@ describe("compile", function () {
       })
 
       it("handles special spellings and special syllables", function () {
-        const source = "hm hng   ng1   iung1   eh1   o1 ong1 uo1 bo1 hong1"
+        const source = "hm hng   ng1   iung1   eh1   o1 ong1 ou1 uo1 bo1 hong1 hou1"
         const result = compileMandarin(source)
 
         /** @type {import("../src/types").CompiledText} */
@@ -33,9 +33,11 @@ describe("compile", function () {
 
             [{main:{consonant:""},pre:[],post:[{vowel:"o"}],reverseAffixes:false}],
             [{main:{consonant:""},pre:[],post:[{vowel:"o",coda:"ng"}],reverseAffixes:false}],
+            [{main:{consonant:""},pre:[],post:[{vowel:"e",coda:"u"}],reverseAffixes:false}],
             [{main:{consonant:""},pre:[],post:[{glide:"u",vowel:"e"}],reverseAffixes:false}],
             [{main:{consonant:"b"},pre:[],post:[{glide:"u",vowel:"e"}],reverseAffixes:false}],
             [{main:{consonant:"h"},pre:[],post:[{glide:"u",vowel:"e",coda:"ng"}],reverseAffixes:false}],
+            [{main:{consonant:"h"},pre:[],post:[{vowel:"e",coda:"u"}],reverseAffixes:false}],
           ]
         expect(result).to.deep.equal(expected)
       })
