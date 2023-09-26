@@ -3,25 +3,25 @@ import { getOwnProp } from "../utils"
 import { compileGeneral } from "./general"
 
 const charcterRegex =
-  /^([1-8ABDEFHLNTVYa-z]*)([457BDFHNbcdfghj-np-tv-z])([iu]?)([12368AELTVYaeo])([1-8ABD-FHLNTVYa-z]*)$/
+  /^([1-8ABDEFHLNTVYa-z]*)([457BDFHNbcdfghj-np-tv-z])(i(?![1E])|u(?![1A])|)([12368AELTVYaeo])([1-8ABD-FHLNTVYa-z]*)$/
 const vowellessRegex =
   /^([1-8ABDEFHLNTVYa-z]*)([457BDFHNbcdfghj-np-tv-z])([iu])()([1-8ABD-FHLNTVYa-z]*)$/
 const letterRegex = /^()([1-8ABDEFHLNTVYa-z])()()()$/
 
 const consonantMapping: Record<string, string> = {
-  "w": "f",
+  "w": "v",
   "n": "nj",
   "D": "c",
   "H": "nz",
   "N": "ng",
+  "l": "n",
   "4": "",
   "5": "ngw",
-  "v": "lw",
+  "v": "nw",
   "F": "dw",
   "7": "tw",
   "B": "gw",
   "c": "kw",
-  "f": "fw",
 }
 const mapping: Record<string, Element> = {
   ...Object.fromEntries(
@@ -36,7 +36,7 @@ const mapping: Record<string, Element> = {
   "a": { vowel: "a" },
   "o": { vowel: "oo" },
   "e": { vowel: "e" },
-  "E": { vowel: "ee" },
+  "E": { vowel: "ii" },
   "A": { vowel: "uu" },
   "Y": { vowel: "a", coda: "i" },
   "L": { vowel: "a", coda: "u" },
@@ -46,7 +46,7 @@ const mapping: Record<string, Element> = {
   "8": { vowel: "e", coda: "ng" },
   "3": { vowel: "e", coda: "n" },
   "V": { vowel: "e", coda: "i" },
-  "1": { vowel: "ih" },
+  "1": {},
   "i": { glide: "i" },
 }
 

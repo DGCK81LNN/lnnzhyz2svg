@@ -5,6 +5,7 @@ export interface Final {
   glide?: string
   vowel?: string
   coda?: string
+  reversed?: boolean
 }
 export interface Modifier {
   modifier: string
@@ -17,6 +18,7 @@ export interface Character {
   pre: Element[]
   main: Element
   post: Element[]
+  /** @deprecated */
   reverseAffixes?: boolean
 }
 

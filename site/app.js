@@ -22,6 +22,7 @@ class Demo {
       this.update()
     } catch (error) {
       out.innerText = error
+      console.error(error)
     }
   }
 

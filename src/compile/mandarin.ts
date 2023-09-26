@@ -45,12 +45,14 @@ function compileSyllable(char: string): Character {
     main: { consonant: init || "" },
     pre: [],
     post: [],
+    // TODO: reverseAffixes is deprecated
     reverseAffixes: tone === "3" || tone === "4",
   }
   const affix = {
     ...(glide ? { glide } : null),
     ...(vowel ? { vowel } : null),
     ...(coda ? { coda } : null),
+    ...(tone === "3" || tone === "4" ? { reversed: true } : null),
   }
   ;(tone === "2" || tone === "3" ? character.pre : character.post).push(affix)
   return character
