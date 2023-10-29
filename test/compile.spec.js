@@ -1,8 +1,6 @@
 const { expect } = require("earl")
 const { compileMandarin, compileShidinn } = require("../src/compile")
 
-const Sub = expect.subset
-
 describe("compile", function () {
   describe("mandarin", function () {
     describe("compileMandarin()", function () {
@@ -12,27 +10,27 @@ describe("compile", function () {
 
         expect(result).toEqual([
           [
-            Sub({
+            {
               proper: true,
               main: { consonant: "zh" },
               pre: [],
               post: [{ glide: "u", vowel: "e", coda: "ng" }],
-            }),
-            Sub({
+            },
+            {
               main: { consonant: "h" },
               pre: [{ glide: "u", vowel: "a" }],
               post: [],
-            }),
-            Sub({
+            },
+            {
               main: { consonant: "" },
               pre: [{ glide: "y", reversed: true }],
               post: [],
-            }),
-            Sub({
+            },
+            {
               main: { consonant: "z" },
               pre: [],
               post: [{ reversed: true }],
-            }),
+            },
           ],
         ])
       })
@@ -45,78 +43,78 @@ describe("compile", function () {
         expect(result).toEqual([
           // hm hng
           [
-            Sub({
+            {
               main: { consonant: "h" },
               pre: [],
               post: [{ consonant: "m" }],
-            }),
+            },
           ],
           [
-            Sub({
+            {
               main: { consonant: "h" },
               pre: [],
               post: [{ consonant: "" }],
-            }),
+            },
           ],
 
           // ng
-          [Sub({ main: { consonant: "" }, pre: [], post: [{}] })],
+          [{ main: { consonant: "" }, pre: [], post: [{}] }],
 
           // iung
           [
-            Sub({
+            {
               main: { consonant: "" },
               pre: [],
               post: [{ glide: "y", vowel: "e", coda: "ng" }],
-            }),
+            },
           ],
 
           //eh
-          [Sub({ main: { consonant: "" }, pre: [], post: [{ vowel: "eh" }] })],
+          [{ main: { consonant: "" }, pre: [], post: [{ vowel: "eh" }] }],
 
           // o ong ou uo bo hong hou
-          [Sub({ main: { consonant: "" }, pre: [], post: [{ vowel: "o" }] })],
+          [{ main: { consonant: "" }, pre: [], post: [{ vowel: "o" }] }],
           [
-            Sub({
+            {
               main: { consonant: "" },
               pre: [],
               post: [{ vowel: "o", coda: "ng" }],
-            }),
+            },
           ],
           [
-            Sub({
+            {
               main: { consonant: "" },
               pre: [],
               post: [{ vowel: "e", coda: "u" }],
-            }),
+            },
           ],
           [
-            Sub({
+            {
               main: { consonant: "" },
               pre: [],
               post: [{ glide: "u", vowel: "e" }],
-            }),
+            },
           ],
           [
-            Sub({
+            {
               main: { consonant: "b" },
               pre: [],
               post: [{ glide: "u", vowel: "e" }],
-            }),
+            },
           ],
           [
-            Sub({
+            {
               main: { consonant: "h" },
               pre: [],
               post: [{ glide: "u", vowel: "e", coda: "ng" }],
-            }),
+            },
           ],
           [
-            Sub({
+            {
               main: { consonant: "h" },
               pre: [],
               post: [{ vowel: "e", coda: "u" }],
-            }),
+            },
           ],
         ])
       })
@@ -127,15 +125,15 @@ describe("compile", function () {
 
         expect(result).toEqual([
           [
-            Sub({ main: { consonant: "8" }, pre: [], post: [] }),
-            Sub({ main: { consonant: "1" }, pre: [], post: [] }),
+            { main: { consonant: "8" }, pre: [], post: [] },
+            { main: { consonant: "1" }, pre: [], post: [] },
           ],
           [
-            Sub({ proper: true, main: { consonant: "l" }, pre: [], post: [] }),
-            Sub({ proper: true, main: { consonant: "n" }, pre: [], post: [] }),
-            Sub({ proper: true, main: { consonant: "n" }, pre: [], post: [] }),
+            { proper: true, main: { consonant: "l" }, pre: [], post: [] },
+            { proper: true, main: { consonant: "n" }, pre: [], post: [] },
+            { proper: true, main: { consonant: "n" }, pre: [], post: [] },
           ],
-          [Sub({ main: { consonant: "xa" }, pre: [], post: [] })],
+          [{ main: { consonant: "xa" }, pre: [], post: [] }],
         ])
       })
 
@@ -145,27 +143,27 @@ describe("compile", function () {
 
         expect(result).toEqual([
           [
-            Sub({
+            {
               main: { consonant: "" },
               pre: [],
               post: [{ glide: "i" }],
-            }),
-            Sub({
+            },
+            {
               main: { consonant: "x" },
               pre: [],
               post: [{ glide: "i", vowel: "e", coda: "n" }],
-            }),
-            Sub({
+            },
+            {
               hyphen: true,
               main: { consonant: "" },
               pre: [],
               post: [{ glide: "i" }],
-            }),
-            Sub({
+            },
+            {
               main: { consonant: "" },
               pre: [],
               post: [{ glide: "i", reversed: true }],
-            }),
+            },
           ],
         ])
       })
@@ -180,29 +178,29 @@ describe("compile", function () {
 
         expect(result).toEqual([
           [
-            Sub({
+            {
               pre: [{ vowel: "e", coda: "i" }],
               main: { consonant: "nj" },
               post: [{ glide: "u", vowel: "e", coda: "ng" }],
-            }),
-            Sub({
+            },
+            {
               pre: [{ vowel: "uu" }],
               main: { consonant: "nz" },
               post: [{ vowel: "a", coda: "u" }],
-            }),
+            },
           ],
           [
-            Sub({
+            {
               proper: true,
               pre: [{ consonant: "x" }],
               main: { consonant: "d" },
               post: [{ glide: "i", vowel: "e", coda: "ng" }],
-            }),
-            Sub({
+            },
+            {
               pre: [{ vowel: "a" }],
               main: { consonant: "h" },
               post: [{ vowel: "oo" }],
-            }),
+            },
           ],
         ])
       })
@@ -213,43 +211,43 @@ describe("compile", function () {
 
         expect(result).toEqual([
           [
-            Sub({
+            {
               pre: [{ consonant: "y" }],
               main: { consonant: "y" },
               post: [{ vowel: "e", coda: "ng" }, { glide: "i" }],
-            }),
-            Sub({
+            },
+            {
               pre: [{ consonant: "x" }],
               main: { consonant: "h" },
               post: [{ vowel: "oo" }],
-            }),
-            Sub({
+            },
+            {
               pre: [{ consonant: "k" }],
               main: { consonant: "c" },
               post: [{ vowel: "e", coda: "n" }, { consonant: "nz" }],
-            }),
+            },
           ],
           [
-            Sub({
+            {
               pre: [],
               main: { consonant: "t" },
               post: [
                 { vowel: "e", coda: "n" },
                 { vowel: "e", coda: "ng" },
               ],
-            }),
-            Sub({
+            },
+            {
               pre: [{ consonant: "g" }],
               main: { consonant: "z" },
               post: [{ vowel: "oo" }, { vowel: "a", coda: "ng" }],
-            }),
+            },
           ],
           [
-            Sub({
+            {
               pre: [{ consonant: "x" }],
               main: { consonant: "d" },
               post: [{ vowel: "e", coda: "ng" }],
-            }),
+            },
           ],
         ])
       })
@@ -260,13 +258,13 @@ describe("compile", function () {
 
         expect(result).toEqual([
           [
-            Sub({ pre: [], main: { vowel: "e", coda: "n" }, post: [] }),
-            Sub({
+            { pre: [], main: { vowel: "e", coda: "n" }, post: [] },
+            {
               hyphen: true,
               pre: [{ consonant: "y" }],
               main: { consonant: "r" },
               post: [{ glide: "u", vowel: "a", coda: "u" }],
-            }),
+            },
           ],
         ])
       })
@@ -277,11 +275,11 @@ describe("compile", function () {
 
         expect(result).toEqual([
           [
-            Sub({
+            {
               pre: [{ consonant: "" }, { vowel: "oo" }],
               main: { consonant: "q" },
               post: [{ glide: "u", vowel: "e", coda: "i" }],
-            }),
+            },
           ],
         ])
       })
@@ -292,11 +290,11 @@ describe("compile", function () {
 
         expect(result).toEqual([
           [
-            Sub({
+            {
               pre: [],
               main: { consonant: "v" },
               post: [{ glide: "u" }, { consonant: "p" }],
-            }),
+            },
           ],
         ])
       })
@@ -307,46 +305,46 @@ describe("compile", function () {
 
         expect(result).toEqual([
           [
-            Sub({
+            {
               pre: [],
               main: { consonant: "" },
               post: [{ glide: "i" }, {}],
-            }),
+            },
           ],
           [
-            Sub({
+            {
               pre: [],
               main: { consonant: "" },
               post: [{ glide: "i" }, { vowel: "ii" }],
-            }),
+            },
           ],
           [
-            Sub({
+            {
               pre: [],
               main: { consonant: "" },
               post: [{ glide: "i", vowel: "uu" }],
-            }),
+            },
           ],
           [
-            Sub({
+            {
               pre: [],
               main: { consonant: "" },
               post: [{ glide: "u" }, {}],
-            }),
+            },
           ],
           [
-            Sub({
+            {
               pre: [],
               main: { consonant: "" },
               post: [{ glide: "u", vowel: "ii" }],
-            }),
+            },
           ],
           [
-            Sub({
+            {
               pre: [],
               main: { consonant: "" },
               post: [{ glide: "u" }, { vowel: "uu" }],
-            }),
+            },
           ],
         ])
       })

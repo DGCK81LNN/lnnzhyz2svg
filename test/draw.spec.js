@@ -4,7 +4,7 @@ const { draw } = require("../src/draw")
 describe("draw", function () {
   describe("draw()", function () {
     // This method returns an SVG so it's hard to write a spec for it, but
-    it("should at least not write 'undefined' in its results", function () {
+    it("should at least not write 'undefined' or 'Infinity' in its results", function () {
       const result = draw([
         // ni3_hau3 sh4_jie4
         [
@@ -12,13 +12,11 @@ describe("draw", function () {
             main: { consonant: "n" },
             pre: [{ glide: "i", reversed: true }],
             post: [],
-            reverseAffixes: true,
           },
           {
             main: { consonant: "h" },
             pre: [{ vowel: "a", coda: "u", reversed: true }],
             post: [],
-            reverseAffixes: true,
           },
         ],
         [
@@ -26,13 +24,11 @@ describe("draw", function () {
             main: { consonant: "sh" },
             pre: [],
             post: [{ reversed: true }],
-            reverseAffixes: true,
           },
           {
             main: { consonant: "j" },
             pre: [],
             post: [{ glide: "i", vowel: "e", reversed: true }],
-            reverseAffixes: true,
           },
         ],
 
@@ -64,6 +60,7 @@ describe("draw", function () {
         ],
       ])
       expect(result).not.toInclude("undefined")
+      expect(result).not.toInclude("Infinity")
     })
   })
 })

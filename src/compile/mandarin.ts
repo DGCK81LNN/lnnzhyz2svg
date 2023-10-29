@@ -45,8 +45,6 @@ function compileSyllable(char: string): Character {
     main: { consonant: init || "" },
     pre: [],
     post: [],
-    // TODO: reverseAffixes is deprecated
-    reverseAffixes: tone === "3" || tone === "4",
   }
   const affix = {
     ...(glide ? { glide } : null),

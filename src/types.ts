@@ -1,16 +1,18 @@
-export interface Consonant {
-  consonant: string
-}
-export interface Final {
+/**
+ * A consonant, final or modifier.
+ *
+ * If one of `consonant` and `modifier` is present, no other prop shall be present alongside it.
+ * When neither is present, the element is a zero final.
+ */
+export interface Element {
+  consonant?: string
   glide?: string
   vowel?: string
   coda?: string
+  /** True if the final is reversed. */
   reversed?: boolean
+  modifier?: string
 }
-export interface Modifier {
-  modifier: string
-}
-export type Element = Final | Consonant | Modifier
 
 export interface Character {
   proper?: boolean
@@ -18,8 +20,6 @@ export interface Character {
   pre: Element[]
   main: Element
   post: Element[]
-  /** @deprecated */
-  reverseAffixes?: boolean
 }
 
 export type CompiledText = Character[][]

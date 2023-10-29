@@ -24,3 +24,32 @@ export function flipPath(d: string, hori: boolean, vert: boolean) {
       return `m${sx}${x},${sy}${y}`
     })
 }
+
+/**
+ * Roughly same as `Array.prototype.findIndex` but does not take empty cells
+ * into account, and returns length of array if not found.
+ */
+export function findIndex<T>(
+  array: T[],
+  predicate: (item: T, index: number, array: T[]) => unknown
+) {
+  const len = array.length
+  for (let i = 0; i < len; i++) {
+    if (predicate(array[i], i, array)) return i
+  }
+  return len
+}
+
+/**
+ * Roughly same as `Array.prototype.findLastIndex` but does not take empty cells
+ * into account.
+ */
+export function findLastIndex<T>(
+  array: T[],
+  predicate: (item: T, index: number, array: T[]) => unknown
+) {
+  for (let i = array.length - 1; i >= 0; i--) {
+    if (predicate(array[i], i, array)) return i
+  }
+  return -1
+}

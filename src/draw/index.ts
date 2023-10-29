@@ -1,5 +1,5 @@
 import { Element, CompiledText } from "../types"
-import { flipPath } from "../utils"
+import { findIndex, findLastIndex, flipPath } from "../utils"
 import _data from "./data.json"
 
 const data = _data as Record<string, Record<string, string>>
@@ -14,16 +14,16 @@ function drawAffix(
   element: Element,
   x: number,
   shrink?: boolean,
-  flipX?: boolean,
-  flipY?: boolean
+  flipX?: boolean
 ) {
-  if ("consonant" in element){if (!narrowConsonants[element.consonant])debugger
+  if ("consonant" in element) {
     return (
       `M${flipX ? x : x - 2},0` +
       narrowConsonants[element.consonant].replace(/\((\d+)\)/g, (_, num) =>
         shrink ? num - 2 : num
       )
-    )}
+    )
+  }
 
   if ("modifier" in element) return `M${x - 2},0` + modifiers[element.modifier]
 
@@ -41,9 +41,9 @@ function drawAffix(
         `M${flipX ? x + 2 : x - 2},${element.reversed ? 2 : 10}` +
         flipPath(codas[element.coda], flipX, element.reversed)
     else if (["e", "a", "o", "eh"].includes(element.vowel))
-      d += `v${element.reversed ? -6 : shrink ? 4 : 6}`
+      d += `v${(element.reversed ? -1 : 1) * (shrink ? 4 : 6)}`
   } else {
-    d += `v${element.reversed ? -12 : shrink ? 10 : 12}`
+    d += `v${(element.reversed ? -1 : 1) * (shrink ? 10 : 12)}`
   }
 
   return d
@@ -53,35 +53,44 @@ export function draw(text: CompiledText): string {
   let d = ""
   let x = 0
   text.forEach(word => {
-    let bottomLineStartX = x
-    for (const element of word[0].pre) {
-      if ("reversed" in element && element.reversed) break
-      bottomLineStartX += 4
-    }
+    const bottomLineStartX = x + 4 * findIndex(word[0].pre, el => el.reversed)
+    let bottomLineEndX = Infinity
     const hyphens: number[] = []
 
     word.forEach((char, charIndex) => {
-      if (char.proper) d += `M${x},-2v2`
       if (char.hyphen) hyphens.push(x - 2)
 
-      // TODO: char.reverseAffixes is deprecated, calculate start and end x coordinates of top line based on element.reversed and char.proper
-      if (char.pre.length) {
-        if (char.reverseAffixes) {
-          if (char.proper) {
-            let stop = char.pre.findIndex(pre => !("coda" in pre))
-            if (stop === -1) stop = char.pre.length
-            if (stop !== 0) d += `h${stop * 4}`
-          }
-        } else {
-          d += `M${x},0h${char.pre.length * 4}`
-        }
+      const properLineEndX =
+        x + 4 * findIndex(char.pre, el => !el.reversed || !el.coda)
+      const topLineStartX = x + 4 * findIndex(char.pre, pre => !pre.reversed)
+      const mainX = x + 4 * char.pre.length
 
-        const shrink = charIndex !== 0
-        char.pre.forEach(element => {
-          d += drawAffix(element, x, shrink, true, char.reverseAffixes)
-          x += 4
-        })
+      if (char.proper) {
+        d += `M${x},-2v2`
+        if (properLineEndX > x && properLineEndX === topLineStartX)
+          d += `H${properLineEndX}`
       }
+      if (topLineStartX < mainX) {
+        if (
+          !char.proper ||
+          properLineEndX === x ||
+          properLineEndX < topLineStartX
+        )
+          d += `M${topLineStartX},0`
+        d += `H${mainX}`
+      }
+
+      char.pre.forEach(element => {
+        d += drawAffix(
+          element,
+          x,
+          element.reversed
+            ? x < properLineEndX || x > topLineStartX
+            : x > bottomLineStartX,
+          true
+        )
+        x += 4
+      })
 
       if ("modifier" in char.main) {
         d += `M${x},0` + modifiers[char.main.modifier]
@@ -94,23 +103,26 @@ export function draw(text: CompiledText): string {
         x += 2
       }
 
+      if (charIndex === word.length - 1) {
+        bottomLineEndX =
+          x + 4 * (findLastIndex(char.post, el => el.reversed) + 1)
+      }
       if (char.post.length) {
-        const shrink = charIndex !== word.length - 1
-        if (!char.reverseAffixes) d += `M${x},0h${char.post.length * 4}`
+        const topLineEndX =
+          x + 4 * (findLastIndex(char.post, element => !element.reversed) + 1)
+        if (topLineEndX > x) d += `M${x},0H${topLineEndX}`
         char.post.forEach(element => {
           x += 4
-          d += drawAffix(element, x, shrink, false, char.reverseAffixes)
+          d += drawAffix(
+            element,
+            x,
+            element.reversed ? x < topLineEndX : x < bottomLineEndX,
+            false
+          )
         })
       }
       x += 2
     })
-
-    let bottomLineEndX = x - 2
-    for (let i = word.at(-1).post.length - 1; i >= 0; i--) {
-      const element = word.at(-1).post[i]
-      if ("reversed" in element && element.reversed) break
-      bottomLineEndX -= 4
-    }
 
     d += `M${bottomLineStartX},12`
     hyphens.forEach(x => {
