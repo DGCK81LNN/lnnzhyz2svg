@@ -6,7 +6,7 @@ const charcterRegex =
   /^([1-8ABDEFHLNTVYa-z]*)([457BDFHNbcdfghj-np-tv-z])(i(?![1E])|u(?![1A])|)([12368AELTVYaeo])([1-8ABD-FHLNTVYa-z]*)$/
 const vowellessRegex =
   /^([1-8ABDEFHLNTVYa-z]*)([457BDFHNbcdfghj-np-tv-z])([iu])()([1-8ABD-FHLNTVYa-z]*)$/
-const letterRegex = /^()([1-8ABDEFHLNTVYa-z])()()()$/
+const letterRegex = /^()([1-8ABDEFHLNTVYa-z]|X[0-9a-f])()()()$/
 
 const consonantMapping: Record<string, string> = {
   "w": "v",
@@ -48,6 +48,11 @@ const mapping: Record<string, Element> = {
   "V": { vowel: "e", coda: "i" },
   "1": {},
   "i": { glide: "i" },
+}
+
+for (let i = 0; i < 16; i++) {
+  const h = i.toString(16)
+  mapping[`X${h}`] = { consonant: i < 10 ? `${i}` : `x${h}` }
 }
 
 function compileFinal(glid: string, vowl: string): Element[] {
