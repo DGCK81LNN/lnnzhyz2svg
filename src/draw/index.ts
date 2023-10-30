@@ -1,14 +1,8 @@
 import { Element, CompiledText } from "../types"
 import { findIndex, findLastIndex, flipPath } from "../utils"
-import _data from "./data.json"
+import data from "./data.json"
 
-const data = _data as Record<string, Record<string, string>>
 const { consonants, glides, vowels, codas, modifiers, narrowConsonants } = data
-
-function makeSvg(x: number, d: string) {
-  const width = x + 3
-  return /* xml */ `<svg xmlns="http://www.w3.org/2000/svg" height="1.1875em" viewBox="-1.5,-3.5,${width},19" style="vertical-align:text-bottom"><path fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="square" d="${d}"/></svg>`
-}
 
 function drawAffix(
   element: Element,
@@ -130,5 +124,7 @@ export function draw(text: CompiledText): string {
     })
     d += `H${bottomLineEndX}`
   })
-  return makeSvg(x - 2, d)
+
+  const width = x + 1
+  return /* xml */ `<svg xmlns="http://www.w3.org/2000/svg" height="1.1875em" viewBox="-1.5,-3.5,${width},19" style="vertical-align:text-bottom"><path fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="square" d="${d}"/></svg>`
 }
