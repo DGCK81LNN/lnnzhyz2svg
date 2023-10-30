@@ -212,8 +212,8 @@ describe("compile", function () {
         expect(result).toEqual([
           [
             {
-              pre: [{ consonant: "y" }],
-              main: { consonant: "y" },
+              pre: [{ consonant: "yj" }],
+              main: { consonant: "yj" },
               post: [{ vowel: "e", coda: "ng" }, { glide: "i" }],
             },
             {
@@ -261,7 +261,7 @@ describe("compile", function () {
             { pre: [], main: { vowel: "e", coda: "n" }, post: [] },
             {
               hyphen: true,
-              pre: [{ consonant: "y" }],
+              pre: [{ consonant: "yj" }],
               main: { consonant: "r" },
               post: [{ glide: "u", vowel: "a", coda: "u" }],
             },

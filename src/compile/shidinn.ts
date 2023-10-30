@@ -10,6 +10,7 @@ const letterRegex = /^()([1-8ABDEFHLNTVYa-z]|X[0-9a-f])()()()$/
 
 const consonantMapping: Record<string, string> = {
   "w": "v",
+  "y": "yj",
   "n": "nj",
   "D": "c",
   "H": "nz",
