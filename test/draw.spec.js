@@ -1,10 +1,9 @@
-const { expect } = require("earl")
 const { draw } = require("../src/draw")
+const { parseSVG } = require("svg-path-parser")
 
 describe("draw", function () {
   describe("draw()", function () {
-    // This method returns an SVG so it's hard to write a spec for it, but
-    it("should at least not write 'undefined' or 'Infinity' in its results", function () {
+    it("should produce a valid SVG path", function () {
       const result = draw([
         // ni3_hau3 sh4_jie4
         [
@@ -59,8 +58,8 @@ describe("draw", function () {
           },
         ],
       ])
-      expect(result).not.toInclude("undefined")
-      expect(result).not.toInclude("Infinity")
+
+      parseSVG(result.match(/\bd="([^"]*)"/)[1])
     })
   })
 })
