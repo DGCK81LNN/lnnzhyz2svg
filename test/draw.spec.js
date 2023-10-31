@@ -1,65 +1,29 @@
 const { draw } = require("../src/draw")
 const { parseSVG } = require("svg-path-parser")
+const { ec, sli, getPathD, serializeText, sthToDraw } = require("./utils")
 
 describe("draw", function () {
   describe("draw()", function () {
     it("should produce a valid SVG path", function () {
-      const result = draw([
-        // ni3_hau3 sh4_jie4
-        [
-          {
-            main: { consonant: "n" },
-            pre: [{ glide: "i", reversed: true }],
-            post: [],
-          },
-          {
-            main: { consonant: "h" },
-            pre: [{ vowel: "a", coda: "u", reversed: true }],
-            post: [],
-          },
-        ],
-        [
-          {
-            main: { consonant: "sh" },
-            pre: [],
-            post: [{ reversed: true }],
-          },
-          {
-            main: { consonant: "j" },
-            pre: [],
-            post: [{ glide: "i", vowel: "e", reversed: true }],
-          },
-        ],
-
-        // Vnu8_AHL xdi8_aho
-        [
-          {
-            pre: [{ vowel: "e", coda: "i" }],
-            main: { consonant: "nj" },
-            post: [{ glide: "u", vowel: "e", coda: "ng" }],
-          },
-          {
-            pre: [{ vowel: "uu" }],
-            main: { consonant: "nz" },
-            post: [{ vowel: "a", coda: "u" }],
-          },
-        ],
-        [
-          {
-            proper: true,
-            pre: [{ consonant: "x" }],
-            main: { consonant: "d" },
-            post: [{ glide: "i", vowel: "e", coda: "ng" }],
-          },
-          {
-            pre: [{ vowel: "a" }],
-            main: { consonant: "h" },
-            post: [{ vowel: "oo" }],
-          },
-        ],
-      ])
-
-      parseSVG(result.match(/\bd="([^"]*)"/)[1])
+      for (const char of sthToDraw.characters()) {
+        const text = [[char, char]]
+        let msg = "Failed to draw text {text}"
+        let d = ""
+        try {
+          const svg = draw(text)
+          msg = "Cannot find path in result of drawing text {text}"
+          d = getPathD(svg)
+          msg = "Invalid SVG path {d} generated for text {text}"
+          parseSVG(d)
+        } catch (err) {
+          throw ec(
+            msg
+              .replace("{text}", sli(serializeText(text)))
+              .replace("{d}", sli(d)),
+            err
+          )
+        }
+      }
     })
   })
 })
