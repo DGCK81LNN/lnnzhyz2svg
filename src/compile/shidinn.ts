@@ -56,12 +56,12 @@ for (let i = 0; i < 16; i++) {
   mapping[`X${h}`] = { consonant: i < 10 ? `${i}` : `x${h}` }
 }
 
-function compileFinal(glid: string, vowl: string): Element[] {
-  if (!glid && !vowl) return []
+function compileFinal(glide: string, vowel: string): Element[] {
+  if (!glide && !vowel) return []
   return [
     {
-      ...getOwnProp(mapping, vowl),
-      ...(glid ? { glide: glid as "i" | "u" } : null),
+      ...getOwnProp(mapping, vowel),
+      ...(glide ? { glide } : null),
     },
   ]
 }
@@ -82,7 +82,10 @@ function compileRadicalLetters(elements: string): Element[] {
  */
 export function compileShidinn(input: string) {
   return compileGeneral(input, char => {
-    const match = char.match(charcterRegex) || char.match(vowellessRegex) || char.match(letterRegex)
+    const match =
+      char.match(charcterRegex) ||
+      char.match(vowellessRegex) ||
+      char.match(letterRegex)
     if (!match) throw new SyntaxError(`Invalid Shidinn character ${char}`)
 
     const [, pre, init, glid, vowl, post] = match

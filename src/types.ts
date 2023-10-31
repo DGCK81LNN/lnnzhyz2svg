@@ -2,7 +2,7 @@
  * A consonant, final or modifier.
  *
  * If one of `consonant` and `modifier` is present, no other prop shall be present alongside it.
- * When neither is present, the element is a zero final.
+ * When neither is present, the element is a final.
  */
 export interface Element {
   consonant?: string
