@@ -43,6 +43,15 @@ function drawAffix(
   return d
 }
 
+/** Returns true if the given pre element connects to the character at the top. */
+function connectsTop(pre: Element) {
+  if (pre.reversed) {
+    if (pre.coda) return false
+    if (["oo", "ii", "uu"].includes(pre.vowel)) return false
+  }
+  return true
+}
+
 export function draw(text: CompiledText): string {
   let d = ""
   let x = 0
@@ -54,14 +63,13 @@ export function draw(text: CompiledText): string {
     word.forEach((char, charIndex) => {
       if (char.hyphen) hyphens.push(x - 2)
 
-      const properLineEndX =
-        x + 4 * findIndex(char.pre, el => !el.reversed || !el.coda)
+      const properLineEndX = x + 4 * findIndex(char.pre, connectsTop)
       const topLineStartX = x + 4 * findIndex(char.pre, pre => !pre.reversed)
       const mainX = x + 4 * char.pre.length
 
       if (char.proper) {
         d += `M${x},-2v2`
-        if (properLineEndX > x && properLineEndX === topLineStartX)
+        if (properLineEndX > x && properLineEndX <= topLineStartX)
           d += `H${properLineEndX}`
       }
       if (topLineStartX < mainX) {
