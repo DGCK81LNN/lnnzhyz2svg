@@ -5,8 +5,8 @@ const { ec, sli, getPathD, serializeText, sthToDraw } = require("./utils")
 describe("draw", function () {
   describe("draw()", function () {
     it("should produce a valid SVG path", function () {
-      for (const char of sthToDraw.characters()) {
-        const text = [[char, char]]
+      for (const word of sthToDraw.words()) {
+        const text = [word]
         let msg = "Failed to draw text {text}"
         let d = ""
         try {

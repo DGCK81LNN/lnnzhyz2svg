@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang=en>
+<head>
+  <meta charset="UTF-8">
+  <meta name=viewport content="width=device-width, initial-scale=1.0">
+  <title>LNNZHYZ2SVG visual spec</title>
+  <link rel=stylesheet href="https://dgck81lnn.github.io/bootstrap-lnn/dist/bootstrap-lnn.min.css">
+  <style>
+    .result-card {
+      min-width: 18rem;
+    }
+    .result-card-header {
+      white-space: pre;
+    }
+    .result-card-body {
+      overflow: auto;
+      font-size: 3rem;
+    }
+    .live-input {
+      font-size: 0.75rem;
+    }
+    .live-output {
+      overflow: auto;
+      font-size: 3rem;
+    }
+  </style>
+</head>
+<body>
+  <main class="m-2">
+    <h1>LNNZHYZ2SVG visual spec</h1>
+    <div class="d-flex flex-wrap gap-2">
+      {{#results}}
+      <article class="col card result-card">
+        <header class="card-header result-card-header font-monospace">{{text}}</header>
+        <div class="card-body result-card-body">
+          {{&result}}
+          {{&error}}
+        </div>
+      </article>
+      {{/results}}
+    </div>
+    <article class="mt-2 card live-card">
+      <header class="card-header font-monospace"
+        ><input type=text class="live-input" id=live-input placeholder="live test"></header>
+      <div class="card-body live-output" id=live-output></div>
+    </article>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>

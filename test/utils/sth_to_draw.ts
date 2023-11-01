@@ -96,7 +96,10 @@ export function* characters(): Generator<Character, void> {
   const xc = () => infXdCons.next().value
 
   yield { main: c(), pre: [], post: [] }
-  for (const f of fa()) yield { main: f, pre: [], post: [] }
+  for (const f of fa()) {
+    delete f.reversed
+    yield { main: f, pre: [], post: [] }
+  }
   for (const f of digits()) yield { main: f, pre: [], post: [] }
   for (const f of modifiers()) yield { main: f, pre: [], post: [] }
 
@@ -112,6 +115,10 @@ export function* characters(): Generator<Character, void> {
     yield { main: c(), pre: [f1, f2], post: [f3] }
   for (const [f1, f2, f3] of repeatedPermutation(fa(), 3))
     yield { main: c(), pre: [f1], post: [f2, f3] }
+  for (const [f1, f2, f3] of repeatedPermutation(fa(), 3))
+    yield { main: c(), pre: [f1, f2, f3], post: [] }
+  for (const [f1, f2, f3] of repeatedPermutation(fa(), 3))
+    yield { main: c(), pre: [], post: [f1, f2, f3] }
 
   for (const [f1, f2] of repeatedPermutation(fa(), 2))
     yield { main: c(), pre: [xc(), f1], post: [f2] }
@@ -122,11 +129,37 @@ export function* characters(): Generator<Character, void> {
   for (const [f1, f2] of repeatedPermutation(fa(), 2))
     yield { main: c(), pre: [xc()], post: [f1, f2] }
   for (const [f1, f2] of repeatedPermutation(fa(), 2))
-    yield { main: c(), pre: [f1], post: [xc(), f2] }
-  for (const [f1, f2] of repeatedPermutation(fa(), 2))
     yield { main: c(), pre: [f1], post: [f2, xc()] }
+  for (const [f1, f2] of repeatedPermutation(fa(), 2))
+    yield { main: c(), pre: [xc(), f1, f2], post: [] }
+  for (const [f1, f2] of repeatedPermutation(fa(), 2))
+    yield { main: c(), pre: [f1, xc(), f2], post: [] }
+  for (const [f1, f2] of repeatedPermutation(fa(), 2))
+    yield { main: c(), pre: [f1, f2, xc()], post: [] }
+  for (const [f1, f2] of repeatedPermutation(fa(), 2))
+    yield { main: c(), pre: [], post: [f1, xc(), f2] }
+  for (const [f1, f2] of repeatedPermutation(fa(), 2))
+    yield { main: c(), pre: [], post: [f1, f2, xc()] }
 }
 
 export function* words() {
-  for (const char of characters()) yield [char, char]
+  let i = 0
+  for (const char of characters()) {
+    const isNumeralOrModifier =
+      "modifier" in char.main ||
+      ("consonant" in char.main &&
+        /^(?:[0-9]|x[a-f])$/.test(char.main.consonant!))
+    yield [
+      Object.assign(
+        !isNumeralOrModifier && i % 2 ? { proper: true } : {},
+        char
+      ),
+      Object.assign(
+        char,
+        !isNumeralOrModifier && !(i % 2) ? { proper: true } : null,
+        i % 4 >= 2 ? { hyphen: true } : null
+      ),
+    ]
+    i++
+  }
 }

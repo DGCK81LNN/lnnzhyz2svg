@@ -14,11 +14,13 @@
   },
   "devDependencies": {
     "@types/mocha": "^10.0.3",
+    "@types/mustache": "^4.2.4",
     "@typescript-eslint/eslint-plugin": "^6.9.0",
     "earl": "^1.1.0",
     "esbuild": "^0.19.5",
     "eslint": "^8.52.0",
     "mocha": "^10.2.0",
+    "mustache": "^4.2.0",
     "svg-path-parser": "^1.1.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2"
@@ -28,6 +30,7 @@
   },
   "scripts": {
     "test": "mocha",
+    "test-visual": "node -r ts-node/register test/visual",
     "build": "npm run build:libdts && npm run build:lib && npm run build:dist",
     "build:libdts": "tsc",
     "build:lib": "esbuild src/index.ts --bundle --outdir=lib --format=cjs",
