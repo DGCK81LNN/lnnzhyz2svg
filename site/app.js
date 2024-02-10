@@ -28,7 +28,7 @@ class Demo {
 
   update() {
     let text = this.inputbox.value || this.inputbox.placeholder
-    text = text.replace(/[\ufdd0-\ufdef]/, "\ufffd").replace(/</g, "\ufdd0")
+    text = text.replace(/\ufdd0/g, "\ufffd").replace(/</g, "\ufdd0")
     text = text.replace(/[\^]?\w+(?:[ _\-][\^]?\w+)*/g, this.fn)
     text = text.replace(/\ufdd0/g, "&lt;").replace(/\n/g, "<br>")
     this.out.innerHTML = text
