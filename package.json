@@ -1,12 +1,13 @@
 {
   "name": "@dgck81lnn/lnnzhyz2svg",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "author": "DGCK81LNN <triluolnn@163.com>",
   "license": "MIT",
   "files": [
     "lib/**/*",
     "dist/**/*",
-    "src/**/*"
+    "src/**/*",
+    "*.d.ts"
   ],
   "main": "lib/index.js",
   "types": "src/index.ts",
