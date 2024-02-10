@@ -1,5 +1,5 @@
-import { Element, CompiledText } from "../types"
-import { findIndex, findLastIndex, flipPath } from "../utils"
+import { Element, CompiledText } from "./types"
+import { findIndex, findLastIndex, flipPath } from "./utils"
 import data from "./data.json"
 
 const { consonants, glides, vowels, codas, modifiers, narrowConsonants } = data

@@ -6,15 +6,8 @@ const util = require("node:util")
 const Mustache = require("mustache")
 const { parseSVG } = require("svg-path-parser")
 const { draw } = require("../../src")
-const {
-  ec,
-  sli,
-  getPathD,
-  serializeText,
-  sthToDraw,
-  deserializeText,
-  tS,
-} = require("../utils")
+const { serializeText, deserializeText } = require("../../src/notation")
+const { ec, getPathD, tS, sthToDraw } = require("../utils")
 
 const args = util.parseArgs({
   options: {
@@ -30,7 +23,9 @@ const port = Number(args.values.port || 57813)
 function errHTML(error) {
   return (
     '<pre style="color: red; font-size: 1rem; white-space: pre-wrap"><samp>' +
-    tS`${error}\n${error?.cause && `    ${error.cause}`}`.replace(/&/g, "&amp;").replace(/</g, "&lt;") +
+    tS`${error}\n${error?.cause && `    ${error.cause}`}`
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;") +
     "</samp></pre>"
   )
 }
@@ -49,7 +44,12 @@ function renderText(text) {
     msg = "Invalid SVG path {d} generated for text {text}"
     parseSVG(d)
   } catch (err) {
-    error = ec(msg.replace("{text}", sli(strText)).replace("{d}", sli(d)), err)
+    error = ec(
+      msg
+        .replace("{text}", JSON.stringify(strText))
+        .replace("{d}", JSON.stringify(d)),
+      err
+    )
     console.dir(error, { depth: 0 })
   }
   return {

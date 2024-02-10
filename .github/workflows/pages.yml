@@ -14,7 +14,7 @@ jobs:
         node-version: 16
         cache: npm
     - run: npm install
-    - run: npm run buildsite
+    - run: npm run build:site
     - run: npm run build:dist
     - name: Move files
       run: |

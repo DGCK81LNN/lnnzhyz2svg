@@ -1,6 +1,7 @@
-const { draw } = require("../src/draw")
+const { draw } = require("..")
+const { serializeText } = require("../lib/notation")
 const { parseSVG } = require("svg-path-parser")
-const { ec, sli, getPathD, serializeText, sthToDraw } = require("./utils")
+const { ec, getPathD, sthToDraw } = require("./utils")
 
 describe("draw", function () {
   describe("draw()", function () {
