@@ -262,7 +262,7 @@ describe("compile", function () {
             {
               hyphen: true,
               pre: [{ consonant: "yj" }],
-              main: { consonant: "r" },
+              main: { consonant: "rz" },
               post: [{ glide: "u", vowel: "a", coda: "u" }],
             },
           ],

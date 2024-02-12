@@ -13,6 +13,7 @@ const consonantMapping: Record<string, string> = {
   "y": "yj",
   "n": "nj",
   "D": "c",
+  "r": "rz",
   "H": "nz",
   "N": "ng",
   "l": "n",

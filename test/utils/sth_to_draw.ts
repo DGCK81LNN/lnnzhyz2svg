@@ -24,15 +24,15 @@ export function* consonants(): Generator<Element, void> {
   for (const consonant of /*prettier-ignore*/ [
     "", "b", "p", "m", "f", "d", "t", "n", "l", "g", "k", "h", "j", "q", "x",
     "zh", "ch", "sh", "r", "z", "c", "s",
-    "v", "yj", "nj", "nz", "ng", "ngw", "nw", "dw", "tw", "gw", "kw",
- ])
+    "v", "yj", "nj", "rz", "nz", "ng", "ngw", "nw", "dw", "tw", "gw", "kw",
+  ])
     yield { consonant }
 }
 
 export function* shidinnConsonants(): Generator<Element, void> {
   for (const consonant of /*prettier-ignore*/ [
     "b", "p", "m", "v", "j", "q", "x", "yj", "nj",
-    "z", "c", "s", "r", "nz",
+    "z", "c", "s", "rz", "nz",
     "ng", "n", "d", "t", "g", "k", "h", "",
     "ngw", "nw", "dw", "tw", "gw", "kw", "f",
   ])
