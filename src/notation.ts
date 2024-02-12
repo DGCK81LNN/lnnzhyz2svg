@@ -2,6 +2,16 @@ import { hasOwnProp } from "./utils"
 import data from "./data.json"
 import { Character, CompiledText, Element } from "./types"
 
+/**
+ * @file Serialization notation.
+ *
+ * These functions do not check whether the input is valid and should only be
+ * expected to work properly on valid text. For example, the first element of
+ * `post`, if present, must be a final. `[[{ main: { consonant: "n" }, post: [{
+ * consonant: "j" }] }]]` serializes as `"nj"`, which then deserializes as `[[{
+ * main: { consonant: "nj" } }]]` instead.
+ */
+
 const sli = JSON.stringify
 
 export function serializeElement(el: Element) {
@@ -41,11 +51,11 @@ const initialRe = new RegExp(
 const finalRe = new RegExp(
   `^(${Object.keys(data.glides).join("|")})?` +
     `(?:(${Object.keys(data.vowels).join("|")})` +
-    `(${Object.keys(data.codas).join("|")})?)?(~?)$`
+    `(${Object.keys(data.codas).join("|")})?)?(?<=.)(~?)$`
 )
 
 export function deserializeElement(s: string): Element {
-  if (!s || s === "~") throw new SyntaxError("Empty element")
+  if (!s) throw new SyntaxError("Empty element")
   if (s === "w") return { consonant: "" }
   if (s === "ih") return {}
   if (s === "ih~") return { reversed: true }
