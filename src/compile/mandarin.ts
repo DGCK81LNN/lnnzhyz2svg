@@ -5,13 +5,15 @@ const syllableRegex =
   /^(zh|ch|sh|[bpmfdtnlgkhjqxrzcs])?([iuy]|iu)?([aeo])?([iunr]|ng)?([1-4])$/
 const ngRegex = /^(ng)()()()([1-4])$/
 const ehRegex = /^()()(eh)()([1-4])$/
-const letteralRegex = /^([A-Z]|Zh|Ch|Sh|[ER]r|[0-9]|X[a-f])$/
+const letteralRegex = /^([A-Za-z]|[ZzCcSs]h|[EeRr]r|[0-9]|[Xx][a-f])$/
 
 function getLetteral(lett: string): Element {
-  if (lett === "Er" || lett === "Rr") return { modifier: "rr" }
-  if (["I", "U", "Y"].includes(lett)) return { glide: lett.toLowerCase() }
-  if (["A", "O", "E"].includes(lett)) return { vowel: lett.toLowerCase() }
-  return { consonant: lett.toLowerCase() }
+  lett = lett.toLowerCase()
+  if (lett === "er" || lett === "rr") return { modifier: "rr" }
+  if (lett === "w") return { consonant: "" }
+  if (["i", "u", "y"].includes(lett)) return { glide: lett }
+  if (["a", "o", "e"].includes(lett)) return { vowel: lett }
+  return { consonant: lett }
 }
 
 function compileSyllable(char: string): Character {
