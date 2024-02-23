@@ -79,7 +79,7 @@ export function* digits(): Generator<Element, void> {
 }
 
 export function* modifiers(): Generator<Element, void> {
-  yield { modifier: "er" }
+  yield { modifier: "rr" }
 }
 
 export function* characters(): Generator<Character, void> {
@@ -120,12 +120,14 @@ export function* characters(): Generator<Character, void> {
   for (const [f1, f2, f3] of repeatedPermutation(fa(), 3))
     yield { main: c(), pre: [], post: [f1, f2, f3] }
 
+  yield { main: { consonant: "h" }, pre: [], post: [{ consonant: "m" }] }
+  yield { main: { consonant: "h" }, pre: [], post: [{ consonant: "" }] }
+
+  for (const f of fa()) yield { main: xc(), pre: [xc()], post: [f] }
   for (const [f1, f2] of repeatedPermutation(fa(), 2))
     yield { main: c(), pre: [xc(), f1], post: [f2] }
   for (const [f1, f2] of repeatedPermutation(fa(), 2))
     yield { main: c(), pre: [f1, xc()], post: [f2] }
-  for (const [f1, f2] of repeatedPermutation(fa(), 2))
-    yield { main: c(), pre: [f1, f2], post: [xc()] }
   for (const [f1, f2] of repeatedPermutation(fa(), 2))
     yield { main: c(), pre: [xc()], post: [f1, f2] }
   for (const [f1, f2] of repeatedPermutation(fa(), 2))

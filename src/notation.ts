@@ -6,10 +6,7 @@ import { Character, CompiledText, Element } from "./types"
  * @file Serialization notation.
  *
  * These functions do not check whether the input is valid and should only be
- * expected to work properly on valid text. For example, the first element of
- * `post`, if present, must be a final. `[[{ main: { consonant: "n" }, post: [{
- * consonant: "j" }] }]]` serializes as `"nj"`, which then deserializes as `[[{
- * main: { consonant: "nj" } }]]` instead.
+ * expected to work properly on valid text.
  */
 
 const sli = JSON.stringify
@@ -27,15 +24,29 @@ export function serializeText(text: CompiledText) {
   return text
     .map(word =>
       word
-        .map(
-          char =>
-            (char.hyphen ? "-" : "") +
-            (char.proper ? "^" : "") +
-            (
-              [...char.pre, char.main].map(serializeElement).join("+") +
-              char.post.map(serializeElement).join("+")
-            ).replace(/~\+/g, "~")
-        )
+        .map(char => {
+          let cs = ""
+          if (char.hyphen) cs += "-"
+          if (char.proper) cs += "^"
+
+          const preEss = char.pre.map(serializeElement)
+          const mainEs = serializeElement(char.main)
+          const postEss = char.post.map(serializeElement)
+
+          cs += [...preEss, mainEs].join("+")
+          if (
+            char.post.length &&
+            (("consonant" in char.main && "consonant" in char.post[0]) ||
+              hasOwnProp(data.consonants, mainEs + postEss[0]) ||
+              (char.pre.length === 0 &&
+                char.post.length === 1 &&
+                hasOwnProp(data.modifiers, mainEs + postEss[0])))
+          )
+            cs += "~"
+          cs += postEss.join("+")
+
+          return cs.replace(/~\+/g, "~")
+        })
         .join("_")
         .replace(/_-/g, "-")
     )
@@ -54,13 +65,13 @@ const finalRe = new RegExp(
     `(${Object.keys(data.codas).join("|")})?)?(?<=.)(~?)$`
 )
 
-export function deserializeElement(s: string): Element {
+export function deserializeElement(s: string, allowModifier = false): Element {
   if (!s) throw new SyntaxError("Empty element")
   if (s === "w") return { consonant: "" }
   if (s === "ih") return {}
   if (s === "ih~") return { reversed: true }
   if (hasOwnProp(data.consonants, s)) return { consonant: s }
-  if (hasOwnProp(data.modifiers, s)) return { modifier: s }
+  if (allowModifier && hasOwnProp(data.modifiers, s)) return { modifier: s }
 
   const match = finalRe.exec(s)
   if (!match) throw new SyntaxError(`Invalid element: ${sli(s)}`)
@@ -90,27 +101,35 @@ export function deserializeText(s: string): CompiledText {
         cs = cs.slice(1)
       }
 
-      for (const es of cs.split(/\+|(?<=~)/)) {
-        const initial = initialRe.exec(es)?.[0]
-        if (initial) {
-          const final = es.slice(initial.length)
-          if (final) {
-            if (main)
-              throw new SyntaxError(
-                `Unexpected main-post element ${sli(es)} in char ${sli(cs)}`
-              )
-            main = deserializeElement(initial)
-            post.push(deserializeElement(final))
-            continue
+      const ess = cs.split(/\+|(?<=~)/)
+      for (const es of ess) {
+        try {
+          ;(main ? post : pre).push(deserializeElement(es, ess.length === 1))
+        } catch (err) {
+          // try parsing as a main-post element combination instead
+          const initial = initialRe.exec(es)?.[0]
+          if (initial) {
+            const final = es.slice(initial.length)
+            if (final) {
+              if (main)
+                throw new SyntaxError(
+                  `Unexpected main-post element ${sli(es)} in char ${sli(cs)}`
+                )
+              main = deserializeElement(initial)
+              if (final !== "~") post.push(deserializeElement(final)) // null final, only used to mark main element
+              continue
+            }
           }
-        }
 
-        ;(main ? post : pre).push(deserializeElement(es))
+          throw err
+        }
       }
 
       if (!main) {
+        // no main-post element combination found
+        // the last element is main, but it must be a consonant if there is more than one element
         main = pre.pop()
-        if (!main)
+        if (!main || (!("consonant" in main) && pre.length))
           throw new SyntaxError(`No main element found in char ${sli(cs)}`)
       }
 
