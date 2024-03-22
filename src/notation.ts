@@ -55,7 +55,7 @@ export function serializeText(text: CompiledText) {
 
 const initialRe = new RegExp(
   `^(?:w|${Object.keys(data.consonants)
-    .filter(Boolean)
+    .filter(c => c && !c.match(/^(?:\d|x[a-f])$/))
     .sort((a, b) => b.length - a.length)
     .join("|")})`
 )
