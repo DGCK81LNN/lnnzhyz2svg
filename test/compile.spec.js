@@ -181,7 +181,7 @@ describe("compile", function () {
             {
               pre: [{ vowel: "e", coda: "i" }],
               main: { consonant: "nj" },
-              post: [{ glide: "u", vowel: "e", coda: "ng" }],
+              post: [{ glide: "u", vowel: "e", coda: "n" }],
             },
             {
               pre: [{ vowel: "uu" }],
@@ -194,7 +194,7 @@ describe("compile", function () {
               proper: true,
               pre: [{ consonant: "x" }],
               main: { consonant: "d" },
-              post: [{ glide: "i", vowel: "e", coda: "ng" }],
+              post: [{ glide: "i", vowel: "e", coda: "n" }],
             },
             {
               pre: [{ vowel: "a" }],
@@ -214,7 +214,7 @@ describe("compile", function () {
             {
               pre: [{ consonant: "yj" }],
               main: { consonant: "yj" },
-              post: [{ vowel: "e", coda: "ng" }, { glide: "i" }],
+              post: [{ vowel: "e", coda: "n" }, { glide: "i" }],
             },
             {
               pre: [{ consonant: "x" }],
@@ -224,7 +224,7 @@ describe("compile", function () {
             {
               pre: [{ consonant: "k" }],
               main: { consonant: "c" },
-              post: [{ vowel: "e", coda: "n" }, { consonant: "nz" }],
+              post: [{ vowel: "e", coda: "ng" }, { consonant: "nz" }],
             },
           ],
           [
@@ -232,8 +232,8 @@ describe("compile", function () {
               pre: [],
               main: { consonant: "t" },
               post: [
-                { vowel: "e", coda: "n" },
                 { vowel: "e", coda: "ng" },
+                { vowel: "e", coda: "n" },
               ],
             },
             {
@@ -246,7 +246,7 @@ describe("compile", function () {
             {
               pre: [{ consonant: "x" }],
               main: { consonant: "d" },
-              post: [{ vowel: "e", coda: "ng" }],
+              post: [{ vowel: "e", coda: "n" }],
             },
           ],
         ])
@@ -258,7 +258,7 @@ describe("compile", function () {
 
         expect(result).toEqual([
           [
-            { pre: [], main: { vowel: "e", coda: "n" }, post: [] },
+            { pre: [], main: { vowel: "e", coda: "ng" }, post: [] },
             {
               hyphen: true,
               pre: [{ consonant: "yj" }],
