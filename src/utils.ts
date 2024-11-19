@@ -1,3 +1,5 @@
+import type { Element } from "./types"
+
 export function hasOwnProp(obj: object, key: string | number | symbol) {
   return Object.prototype.hasOwnProperty.call(obj, key) as boolean
 }
@@ -52,4 +54,34 @@ export function findLastIndex<T>(
     if (predicate(array[i], i, array)) return i
   }
   return -1
+}
+
+export function findKey<K extends string | number, V>(
+  obj: Record<K, V>,
+  predicate: (v: V, k: K) => boolean
+): string | undefined {
+  for (const k in obj) {
+    if (predicate(obj[k], k)) return k
+  }
+  return undefined
+}
+
+function isPropEqual<T extends object>(a: T, b: T, key: keyof T) {
+  if (key in a) return key in b && a[key] === b[key]
+  if (key in b) return false
+  return undefined
+}
+function finalEquals(a: Element, b: Element) {
+  if (!!a.reversed !== !!b.reversed) return false
+  if (isPropEqual(a, b, "glide") === false) return false
+  if (isPropEqual(a, b, "vowel") === false) return false
+  if (isPropEqual(a, b, "coda") === false) return false
+  return true
+}
+export function elementEquals(a: Element, b: Element) {
+  return (
+    isPropEqual(a, b, "consonant") ??
+    isPropEqual(a, b, "modifier") ??
+    finalEquals(a, b)
+  )
 }

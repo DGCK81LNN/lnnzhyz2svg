@@ -1,0 +1,152 @@
+// pua parseMixed() parses all valid PUA sequences 1
+
+[
+  [
+    {
+      main: {
+        consonant: "c"
+      }
+      post: [
+        {
+          coda: "i"
+          vowel: "e"
+        }
+      ]
+      pre: []
+      proper: true
+    }
+    {
+      main: {
+        consonant: "nw"
+      }
+      post: [
+        {
+          coda: "i"
+          glide: "i"
+          vowel: "e"
+        }
+      ]
+      pre: []
+    }
+  ]
+  [
+    {
+      main: {
+        consonant: "yj"
+      }
+      post: [
+        {
+          vowel: "oo"
+        }
+      ]
+      pre: []
+    }
+    {
+      main: {
+        consonant: "nj"
+      }
+      post: [
+        {
+          coda: "ng"
+          vowel: "a"
+        }
+      ]
+      pre: []
+    }
+  ]
+  [
+    {
+      main: {
+        glide: "i"
+      }
+      post: []
+      pre: []
+      proper: true
+    }
+    {
+      main: {
+        consonant: "s"
+      }
+      post: []
+      pre: []
+    }
+    {
+      main: {
+        vowel: "e"
+      }
+      post: []
+      pre: []
+    }
+    {
+      main: {
+        consonant: "k"
+      }
+      post: []
+      pre: []
+    }
+    {
+      main: {
+        glide: "i"
+      }
+      post: []
+      pre: []
+    }
+    {
+      hyphen: true
+      main: {
+        consonant: "q"
+      }
+      post: [
+        {
+          coda: "ng"
+          vowel: "a"
+        }
+      ]
+      pre: []
+    }
+  ]
+  "，你家 "
+  [
+    {
+      main: {
+        consonant: "zh"
+      }
+      post: [
+        {
+          reversed: true
+          vowel: "a"
+        }
+      ]
+      pre: []
+    }
+    {
+      main: {
+        consonant: "g"
+      }
+      post: [
+        {
+          coda: "i"
+          glide: "u"
+          reversed: true
+          vowel: "e"
+        }
+      ]
+      pre: []
+    }
+  ]
+  [
+    {
+      main: {
+        consonant: "zh"
+      }
+      post: [
+        {
+          reversed: true
+          vowel: "a"
+        }
+      ]
+      pre: []
+    }
+  ]
+  " 的成"
+]
