@@ -80,7 +80,6 @@ function compileLetteral(char: string) {
  *   * Separate words with spaces.
  *   * Hyphens can be used but punctuation is not allowed.
  *   * Prefix proper nouns with a caret (`^`).
- *   * Letterals should be capitalized.
  */
 export function compileMandarin(input: string) {
   return compileGeneral(input, compileSyllable, compileLetteral)
