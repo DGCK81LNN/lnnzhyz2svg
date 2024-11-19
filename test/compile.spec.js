@@ -1,5 +1,5 @@
 const { expect } = require("earl")
-const { compileMandarin, compileShidinn } = require("..")
+const { compileMandarin, compileShidinn } = require("../src")
 
 describe("compile", function () {
   describe("mandarin", function () {
