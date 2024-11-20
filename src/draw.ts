@@ -52,7 +52,45 @@ function connectsTop(pre: Element) {
   return true
 }
 
-export function draw(text: CompiledText): string {
+export interface DrawOptions {
+  /** Return an object containing all the information about the drawn text, rather than an SVG string. */
+  raw?: boolean
+  /** Defaults to 1. Should be between 0 and 2 (exclusive). */
+  strokeWidth?: number
+}
+
+export interface RawDrawResult {
+  /** Stroke width of the SVG path in CSS pixels. */
+  strokeWidth: number
+  /** Starting X coordinate of the SVG image's view box in CSS pixels. */
+  left: number
+  /** Starting Y coordinate of the SVG image's view box in CSS pixels. */
+  top: number
+  /** Width of the SVG image's view box in CSS pixels. */
+  width: number
+  /** Height of the SVG image's view box in CSS pixels. */
+  height: number
+  /** Height of the SVG element in ems when placed in a paragraph. */
+  heightEms: number
+  /** vertical-align of the SVG element in ems when placed in a paragraph. */
+  verticalAlignEms: number
+  /** Path data. */
+  d: string
+}
+
+export function draw(
+  text: CompiledText,
+  options?: DrawOptions & { raw?: false }
+): string
+export function draw(
+  text: CompiledText,
+  options: DrawOptions & { raw: true }
+): RawDrawResult
+export function draw(
+  text: CompiledText,
+  options?: DrawOptions
+): string | RawDrawResult
+export function draw(text: CompiledText, options?: DrawOptions) {
   let d = ""
   let x = 0
   text.forEach(word => {
@@ -133,6 +171,25 @@ export function draw(text: CompiledText): string {
     d += `H${bottomLineEndX}`
   })
 
-  const width = x + 1
-  return /* xml */ `<svg xmlns="http://www.w3.org/2000/svg" height="1.1875em" viewBox="-1.5,-3.5,${width},19" style="vertical-align:text-bottom"><path fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="square" d="${d}"/></svg>`
+  const strokeWidth = options?.strokeWidth ?? 1
+  const left = -0.5 - strokeWidth / 2
+  const top = -2 - strokeWidth / 2
+  const width = x
+  const height = 16 + strokeWidth
+  const heightEms = height / 16
+  const verticalAlignEms = -(2 + strokeWidth / 2) / 16
+
+  if (options?.raw)
+    return {
+      strokeWidth,
+      left,
+      top,
+      width,
+      height,
+      heightEms,
+      verticalAlignEms,
+      d,
+    }
+
+  return /* xml */ `<svg xmlns="http://www.w3.org/2000/svg" height="${heightEms}em" viewBox="${left},${top},${width},${height}" style="vertical-align:${verticalAlignEms}em"><path fill="none" stroke="currentColor" stroke-width="${strokeWidth}" stroke-linecap="square" d="${d}"/></svg>`
 }

@@ -1,13 +1,30 @@
 import { compileMandarin, compileShidinn } from "./compile"
-import { draw } from "./draw"
+import { type DrawOptions, type RawDrawResult, draw } from "./draw"
 
 export { compileMandarin, compileShidinn, draw }
 
-export function drawMandarin(input: string) {
-  return draw(compileMandarin(input))
+export function drawMandarin(
+  input: string,
+  options?: DrawOptions & { raw?: false }
+): string
+export function drawMandarin(
+  input: string,
+  options: DrawOptions & { raw: true }
+): RawDrawResult
+export function drawMandarin(input: string, options?: DrawOptions) {
+  return draw(compileMandarin(input), options)
 }
-export function drawShidinn(input: string) {
-  return draw(compileShidinn(input))
+
+export function drawShidinn(
+  input: string,
+  options?: DrawOptions & { raw?: false }
+): string
+export function drawShidinn(
+  input: string,
+  options: DrawOptions & { raw: true }
+): RawDrawResult
+export function drawShidinn(input: string, options?: DrawOptions) {
+  return draw(compileShidinn(input), options)
 }
 
 export * as PUA from "./pua"
