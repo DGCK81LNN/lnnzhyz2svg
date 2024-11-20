@@ -239,8 +239,14 @@ export function parseCharacter(input: string) {
   i++
 
   mandarin: if (!pre.length) {
-    if (cps[i] === TAIL_M) return ok({ post: [{ consonant: "m" }] })
-    if (cps[i] === TAIL_NG) return ok({ post: [{ consonant: "w" }] })
+    if (cps[i] === TAIL_M) {
+      i++
+      return ok({ post: [{ consonant: "m" }] })
+    }
+    if (cps[i] === TAIL_NG) {
+      i++
+      return ok({ post: [{ consonant: "w" }] })
+    }
     const tone = findKey(TONES, v => v === cps[i])
     if (!tone) break mandarin
     i++
