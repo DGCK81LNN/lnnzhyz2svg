@@ -26,7 +26,31 @@ describe("pua", function () {
       ).toEqual("\ue05b\ue081")
     })
 
-    it("throws on unencoded elements")
+    it("throws on unencoded elements", function () {
+      const ian = { glide: "i", vowel: "a", coda: "n" }
+      expect(() =>
+        PUA.stringifyCharacter({
+          main: ian,
+          pre: [],
+          post: [],
+        })
+      ).toThrow(
+        PUA.NotEncodedError,
+        `Cannot stringify element ${JSON.stringify(ian)}`
+      )
+
+      const reversedUu = { vowel: "uu", reversed: true }
+      expect(() =>
+        PUA.stringifyCharacter({
+          main: { consonant: "z" },
+          pre: [],
+          post: [reversedUu],
+        })
+      ).toThrow(
+        PUA.NotEncodedError,
+        `Cannot stringify element ${JSON.stringify(reversedUu)}`
+      )
+    })
   })
 
   describe("stringifyText()", function () {
