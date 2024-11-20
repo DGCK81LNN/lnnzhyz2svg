@@ -1,5 +1,8 @@
 const { expect } = require("earl")
 const { PUA } = require("../src")
+const { sthToDraw } = require("./utils")
+const { serializeText } = require("../lib/notation")
+const sli = JSON.stringify
 
 describe("pua", function () {
   describe("stringifyCharacter()", function () {
@@ -177,5 +180,26 @@ describe("pua", function () {
         )
       ).toMatchSnapshot(this)
     })
+  })
+
+  it("roundtrip test", function () {
+    for (const word of sthToDraw.words()) {
+      try {
+        var r = PUA.stringifyText([word], { mandarin: true })
+      } catch (e) {
+        if (e instanceof PUA.NotEncodedError) continue
+        console.error(`stringification threw for word ${sli(w)}`)
+        throw e
+      }
+      try {
+        expect(PUA.parseMixed(r)).toEqual([word])
+      } catch (e) {
+        const w = serializeText([word])
+        console.error(
+          `round-trip test failed for word ${sli(w)}, string: ${sli(r)}`
+        )
+        throw e
+      }
+    }
   })
 })

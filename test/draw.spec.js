@@ -3,6 +3,7 @@ const { serializeText } = require("../lib/notation")
 const { expect } = require("earl")
 const { parseSVG } = require("svg-path-parser")
 const { ec, sthToDraw } = require("./utils")
+const sli = JSON.stringify
 
 describe("draw", function () {
   describe("draw()", function () {
