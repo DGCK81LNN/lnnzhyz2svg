@@ -1,10 +1,6 @@
 import { Character, CompiledText, Element } from "./types"
 import { elementEquals, findKey, hasOwnProp } from "./utils"
 
-export interface StringifyOptions {
-  mandarin?: boolean
-}
-
 const FCP = String.fromCodePoint
 function hex(cp: number) {
   if (cp === undefined) return "EOF"
@@ -126,10 +122,18 @@ function init() {
   initialized = true
 }
 
+export interface StringifyOptions {
+  mandarin?: boolean
+}
+
+export class NotEncodedError extends Error {
+  name = "lnnzhyz2svg.PUA.NotEncodedError"
+}
+
 function stringifyElement(mapping: Record<number, Element>, el: Element) {
   const cp = findKey(mapping, v => elementEquals(v, el))
   if (cp === undefined)
-    throw new Error("Cannot stringify element " + JSON.stringify(el))
+    throw new NotEncodedError("Cannot stringify element " + JSON.stringify(el))
   return FCP(+cp)
 }
 
