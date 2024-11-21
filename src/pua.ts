@@ -32,23 +32,23 @@ function init() {
   for (let i = 0; i < 10; i++) LETTERS[0xe040 + i] = { consonant: String(i) }
   for (let i = 10; i < 16; i++)
     LETTERS[0xe040 + i] = { consonant: `x${i.toString(16)}` }
-  " b p m f d t n l g k h j q x zh ch sh r z c s v"
-    .split(" ")
+  ",b,p,m,f,d,t,n,l,g,k,h,j,q,x,zh,ch,sh,r,z,c,s,v"
+    .split(",")
     .forEach((l, i) => {
       LETTERS[0xe050 + i] = { consonant: l }
       MANDARIN_INITIALS[l] = 0xe050 + i
     })
-  "i u y".split(" ").forEach((l, i) => {
+  "i,u,y".split(",").forEach((l, i) => {
     LETTERS[0xe067 + i] = { glide: l }
     GLIDES[(GLIDES[l] = 0xe074 + i)] = l
   })
-  "e a o".split(" ").forEach((l, i) => {
+  "e,a,o".split(",").forEach((l, i) => {
     LETTERS[0xe06a + i] = { vowel: l }
     VOWELS[(VOWELS[l] = 0xe077 + i)] = l
   })
   VOWELS[(VOWELS.eh = 0xe07a)] = "eh"
   LETTERS[0xe06d] = { modifier: "rr" }
-  "i u n ng r".split(" ").forEach((l, i) => {
+  "i,u,n,ng,r".split(",").forEach((l, i) => {
     CODAS[(CODAS[l] = 0xe07b + i)] = l
   })
 
@@ -80,7 +80,7 @@ function init() {
     defineMandarinFinal({ vowel: "eh" })
   }
 
-  "yj nj rz nz ng ngw nw dw tw gw kw".split(" ").forEach((l, i) => {
+  "yj,nj,rz,nz,ng,ngw,nw,dw,tw,gw,kw".split(",").forEach((l, i) => {
     LETTERS[0xe170 + i] = { consonant: l }
   })
   LETTERS[0xe180] = { vowel: "oo" }
@@ -103,8 +103,8 @@ function init() {
       PRES[cp++] = { ...el }
     }
 
-    "b p m v j q x yj nj z c s rz nz ng n d t g k h w ngw nw dw tw gw kw f"
-      .split(" ")
+    "b,p,m,v,j,q,x,yj,nj,z,c,s,rz,nz,ng,n,d,t,g,k,h,,ngw,nw,dw,tw,gw,kw,f"
+      .split(",")
       .forEach(c => defineShidinnAddition({ consonant: c }))
 
     cp = 0xe1d0
@@ -161,7 +161,7 @@ export function stringifyCharacter(
     const final = isPre ? char.pre[0] : char.post[0]
     if (!isPre && char.main.consonant === "h") {
       if (elementEquals(final, { consonant: "m" })) return sm + FCP(TAIL_M)
-      if (elementEquals(final, { consonant: "w" })) return sm + FCP(TAIL_NG)
+      if (elementEquals(final, { consonant: "" })) return sm + FCP(TAIL_NG)
     }
 
     if ("consonant" in final || "modifier" in final) break mandarin
