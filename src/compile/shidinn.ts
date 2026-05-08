@@ -2,10 +2,12 @@ import { Element } from "../types"
 import { getOwnProp } from "../utils"
 import { compileGeneral } from "./general"
 
+const strongAspiratedRegex =
+  /^([1-8ABDEFHLNTVYa-z]*)([dtl])()(1s)((?:'?[1-8ABD-FHLNTVYa-z])*)$/
 const charcterRegex =
-  /^([1-8ABDEFHLNTVYa-z]*)([457BDFHNbcdfghj-np-tv-z])(i(?![1E])|u(?![1A])|)([12368AELTVYaeo])([1-8ABD-FHLNTVYa-z]*)$/
+  /^([1-8ABDEFHLNTVYa-z]*)([457BDFHNbcdfghj-np-tv-z])(i(?![1E])|u(?![1A])|)([12368AELTVYaeo])((?:'?[1-8ABD-FHLNTVYa-z])*)$/
 const vowellessRegex =
-  /^([1-8ABDEFHLNTVYa-z]*)([457BDFHNbcdfghj-np-tv-z])([iu])()([1-8ABD-FHLNTVYa-z]*)$/
+  /^([1-8ABDEFHLNTVYa-z]*)([457BDFHNbcdfghj-np-tv-z])([iu])()((?:'?[1-8ABD-FHLNTVYa-z])*)$/
 const letterRegex = /^()([1-8ABDEFHLNTVYa-z]|X[0-9a-f])()()()$/
 
 const consonantMapping: Record<string, string> = {
@@ -50,6 +52,7 @@ const mapping: Record<string, Element> = {
   "V": { vowel: "e", coda: "i" },
   "1": {},
   "i": { glide: "i" },
+  "1s": { vowel: "is" },
 }
 
 for (let i = 0; i < 16; i++) {
@@ -84,6 +87,7 @@ function compileRadicalLetters(elements: string): Element[] {
 export function compileShidinn(input: string) {
   return compileGeneral(input, char => {
     const match =
+      char.match(strongAspiratedRegex) ||
       char.match(charcterRegex) ||
       char.match(vowellessRegex) ||
       char.match(letterRegex)

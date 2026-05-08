@@ -42,7 +42,7 @@ export function* shidinnConsonants(): Generator<Element, void> {
 const glides = ["", "i", "u", "y"]
 const vowels = ["", "e", "a"]
 const codas = ["", "i", "u", "n", "ng", "r"]
-const standaloneVowels = ["o", "eh", "oo", "ii", "uu"]
+const standaloneVowels = ["o", "eh", "oo", "ii", "uu", "is"]
 
 export function* finals(n = 0): Generator<Element, void> {
   let i = n % 4
