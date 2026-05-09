@@ -33,6 +33,12 @@
           data-bs-toggle=tab data-bs-target="#pane-shidinn"
         >希顶语</button>
       </li>
+      <li class="nav-item" role=presentation>
+        <button class="nav-link" id=tab-pua
+          type=button role=tab aria-controls=pane-pua aria-selected=false
+          data-bs-toggle=tab data-bs-target="#pane-pua"
+        >LNN 密文 PUA 编码</button>
+      </li>
     </ul>
 
     <div class="tab-content">
@@ -49,6 +55,12 @@
           placeholder="c3q_rAH yL qzu2_8fY de wi8_fHL"
         ></textarea>
         <div id=out-shidinn class="out"></div>
+      </div>
+      <div class="tab-pane" id=pane-pua
+        role=tabpanel aria-labelledby=tab-pua tabindex=0>
+        <textarea id=inputbox-pua class="form-control"
+          placeholder="粘贴 PUA 编码来生成 SVG&#10;使用 U+200C ZERO WIDTH NON-JOINER 代替空格分隔字词以使其合并到单个 SVG 元素"></textarea>
+        <div id=out-pua class="out"></div>
       </div>
     </div>
   </main>
