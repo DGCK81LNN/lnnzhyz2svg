@@ -3,13 +3,15 @@
     "src/**/*"
   ],
   "compilerOptions": {
+    "strict": false,
     "noImplicitAny": true,
     "module": "CommonJS",
     "esModuleInterop": true,
     "target": "es2020",
+    "rootDir": "src",
     "outDir": "lib",
     "declaration": true,
     "emitDeclarationOnly": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": false, // do not infer types from JSON files, use .d.ts
   }
 }

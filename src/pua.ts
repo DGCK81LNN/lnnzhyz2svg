@@ -245,7 +245,7 @@ export function parseCharacter(input: string) {
     }
     if (cps[i] === TAIL_NG) {
       i++
-      return ok({ post: [{ consonant: "w" }] })
+      return ok({ post: [{ consonant: "" }] })
     }
     const tone = findKey(TONES, v => v === cps[i])
     if (!tone) break mandarin

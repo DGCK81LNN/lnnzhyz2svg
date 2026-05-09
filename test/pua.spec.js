@@ -22,7 +22,7 @@ describe("pua", function () {
           {
             main: { consonant: "h" },
             pre: [],
-            post: [{ consonant: "w" }],
+            post: [{ consonant: "" }],
           },
           { mandarin: true }
         )
