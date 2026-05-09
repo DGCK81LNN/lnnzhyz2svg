@@ -47,7 +47,7 @@ function drawAffix(
 function connectsTop(pre: Element) {
   if (pre.reversed) {
     if (pre.coda) return false
-    if (["oo", "ii", "uu"].includes(pre.vowel)) return false
+    if (["oo", "ii", "uu", "is"].includes(pre.vowel)) return false
   }
   return true
 }

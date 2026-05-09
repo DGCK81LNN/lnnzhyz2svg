@@ -95,6 +95,7 @@ function init() {
   LETTERS[0xe189] = { vowel: "e", coda: "ng" }
   LETTERS[0xe18a] = { vowel: "e", coda: "i" }
   LETTERS[0xe18b] = {}
+  LETTERS[0xe18c] = { vowel: "is" }
 
   {
     let cp = 0xe190
@@ -111,6 +112,7 @@ function init() {
     defineShidinnAddition({ vowel: "oo" })
     defineShidinnAddition({ vowel: "ii" })
     defineShidinnAddition({ vowel: "uu" })
+    POSTS[cp++] = { vowel: "is" }
 
     cp = 0xe1d8
     defineShidinnAddition({ glide: "i", vowel: "oo" })

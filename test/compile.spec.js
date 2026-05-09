@@ -299,8 +299,8 @@ describe("compile", function () {
         ])
       })
 
-      it("should not treat i1, iE, u1, uA as valid finals", function () {
-        const source = "4i1 4iE 4iA 4u1 4uE 4uA"
+      it("should not treat i1, u1 as valid finals", function () {
+        const source = "4i1 4iA 4u1 4uE"
         const result = compileShidinn(source)
 
         expect(result).toEqual([
@@ -309,13 +309,6 @@ describe("compile", function () {
               pre: [],
               main: { consonant: "" },
               post: [{ glide: "i" }, {}],
-            },
-          ],
-          [
-            {
-              pre: [],
-              main: { consonant: "" },
-              post: [{ glide: "i" }, { vowel: "ii" }],
             },
           ],
           [
@@ -337,13 +330,6 @@ describe("compile", function () {
               pre: [],
               main: { consonant: "" },
               post: [{ glide: "u", vowel: "ii" }],
-            },
-          ],
-          [
-            {
-              pre: [],
-              main: { consonant: "" },
-              post: [{ glide: "u" }, { vowel: "uu" }],
             },
           ],
         ])

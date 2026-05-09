@@ -1,10 +1,11 @@
 const { drawMandarin, drawShidinn } = require("../src")
 
 class Demo {
-  constructor(inputbox, out, fn) {
+  constructor(inputbox, out, fn, { wordRegex, charPattern = "[\\dA-Za-z]+" } = {}) {
     this.inputbox = inputbox
     this.out = out
     this.fn = fn
+    this.wordRegex = wordRegex ?? new RegExp(String.raw`\^?${charPattern}(?:[ _\-]\^?${charPattern})*`, "g")
 
     this.inputbox.oninput = () => {
       this.error = null
@@ -29,7 +30,7 @@ class Demo {
   update() {
     let text = this.inputbox.value || this.inputbox.placeholder
     text = text.replace(/\ufdd0/g, "\ufffd").replace(/</g, "\ufdd0")
-    text = text.replace(/[\^]?\w+(?:[ _\-][\^]?\w+)*/g, this.fn)
+    text = text.replace(this.wordRegex, this.fn)
     text = text.replace(/\ufdd0/g, "&lt;").replace(/\n/g, "<br>")
     this.out.innerHTML = text
   }
@@ -43,5 +44,6 @@ new Demo(
 new Demo(
   document.getElementById("inputbox-shidinn"),
   document.getElementById("out-shidinn"),
-  text => drawShidinn(text)
+  text => drawShidinn(text),
+  { charPattern: "[\\dA-Za-z]+(?:'[\\dA-Za-z]+)*" }
 )
