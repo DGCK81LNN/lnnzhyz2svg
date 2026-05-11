@@ -14,6 +14,11 @@
       overflow-wrap: break-word;
       overflow-x: auto;
     }
+    @font-face {
+      font-family: 'LNNPUA';
+      src: url('https://vudrux.site/fonts/UnifontLNNPUA.woff2') format('woff2');
+      font-display: block;
+    }
   </style>
 </head>
 <body>
@@ -57,7 +62,8 @@
         <div id=out-shidinn class="out"></div>
       </div>
       <div class="tab-pane" id=pane-pua
-        role=tabpanel aria-labelledby=tab-pua tabindex=0>
+        role=tabpanel aria-labelledby=tab-pua tabindex=0
+        style="font-family: 'LNNPUA', var(--bs-body-font-family)">
         <textarea id=inputbox-pua class="form-control"
           placeholder="粘贴 PUA 编码来生成 SVG&#10;使用 U+200C ZERO WIDTH NON-JOINER 代替空格分隔字词以使其合并到单个 SVG 元素"></textarea>
         <div id=out-pua class="out"></div>
